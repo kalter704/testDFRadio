@@ -7,11 +7,22 @@
     <string name="toolbar_title">DANCE FAMILY</string>
     <string name="toolbar_subtitle">RADIO</string>
 
+    /*
+    String for menu activity
+    */
     <string name="menu_title">МЕНЮ</string>
     <string name="menu_shate">Поделиться с друзьями</string>
     <string name="menu_info">О Dance Family</string>
     <string name="menu_star">Оценить радио</string>
     <string name="menu_money">Помочь проекту</string>
     <string name="menu_email">Написать разработчикам</string>
+
+    <string name="text_description_action">Поделиться</string>
+    <string name="text_for_shape">
+        Радио DANCE Family - лучшее радио!!!!!!!!!!\n
+        Вот ссылочка: http://ya.ru
+    </string>
+
+    <string name="link_to_app_in_google_play">market://details?id=com.baviux.voicechanger</string>
 
 </resources>

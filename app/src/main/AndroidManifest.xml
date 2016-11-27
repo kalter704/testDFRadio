@@ -27,6 +27,9 @@
         <activity
             android:name=".Activityes.PlayActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activityes.InfoActivityes.AboutDFActivity" />
+        <activity android:name=".Activityes.InfoActivityes.DonateActivity" />
+        <activity android:name=".Activityes.InfoActivityes.DevWriteActivity"></activity>
     </application>
 
 </manifest>

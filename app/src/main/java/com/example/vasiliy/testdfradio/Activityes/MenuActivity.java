@@ -1,14 +1,21 @@
 package com.example.vasiliy.testdfradio.Activityes;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.vasiliy.testdfradio.Activityes.InfoActivityes.AboutDFActivity;
+import com.example.vasiliy.testdfradio.Activityes.InfoActivityes.DevWriteActivity;
+import com.example.vasiliy.testdfradio.Activityes.InfoActivityes.DonateActivity;
 import com.example.vasiliy.testdfradio.R;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private final boolean DEBUG_MENU_ACTIVITY = true; // true = debug on, false = debug off
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,25 +40,42 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.ivBack:
-                this.finish();
+                finish();
                 break;
             case R.id.llShare:
-                Toast.makeText(MenuActivity.this, String.valueOf("llShare"), Toast.LENGTH_SHORT).show();
+                debugToast("llShare");
+                intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_for_shape));
+                startActivity(Intent.createChooser(intent, getString(R.string.text_description_action)));
                 break;
             case R.id.llInfo:
-                Toast.makeText(MenuActivity.this, String.valueOf("llInfo"), Toast.LENGTH_SHORT).show();
+                debugToast("llInfo");
+                startActivity(new Intent(getApplicationContext(), AboutDFActivity.class));
                 break;
             case R.id.llStar:
-                Toast.makeText(MenuActivity.this, String.valueOf("llStar"), Toast.LENGTH_SHORT).show();
+                debugToast("llStar");
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(getString(R.string.link_to_app_in_google_play)));
+                startActivity(intent);
                 break;
             case R.id.llMoney:
-                Toast.makeText(MenuActivity.this, String.valueOf("llMoney"), Toast.LENGTH_SHORT).show();
+                debugToast("llMoney");
+                startActivity(new Intent(getApplicationContext(), DonateActivity.class));
                 break;
             case R.id.llEmail:
-                Toast.makeText(MenuActivity.this, String.valueOf("llEmail"), Toast.LENGTH_SHORT).show();
+                debugToast("llEmail");
+                startActivity(new Intent(getApplicationContext(), DevWriteActivity.class));
                 break;
+        }
+    }
+
+    private void debugToast(String str) {
+        if(DEBUG_MENU_ACTIVITY) {
+            Toast.makeText(MenuActivity.this, str, Toast.LENGTH_SHORT).show();
         }
     }
 }
