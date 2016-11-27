@@ -36,5 +36,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         splashTimer.start();
+
+        // TODO: определение любимых радио
     }
 }

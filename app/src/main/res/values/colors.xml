@@ -12,6 +12,8 @@
 
     <color name="textColorPrimary">#ffffff</color>
     <color name="textColorSecondary">#ffffff</color>
+    <color name="textColorSecondPrimary">#000000</color>
+    <color name="textColorSecondSecondary">#000000</color>
 
     <color name="colorWhiteBackground">#ffffff</color>
     <color name="colorBlackBackground">#000000</color>

@@ -10,6 +10,10 @@
     <dimen name="text_size_title_toolbar">20sp</dimen>
     <dimen name="text_size_subtitle_toolbar">16sp</dimen>
     <dimen name="text_size_menu_items">18sp</dimen>
+    <dimen name="text_size_name_radio">18sp</dimen>
+    <dimen name="text_size_location_radio">16sp</dimen>
+    <dimen name="text_size_title_state">22sp</dimen>
+    <dimen name="text_size_subtitle_state">18sp</dimen>
 
     <dimen name="space_between_titles_in_toolbar">-7dp</dimen>
 

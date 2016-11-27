@@ -8,7 +8,7 @@
     <string name="toolbar_subtitle">RADIO</string>
 
     /*
-    String for menu activity
+        String for menu activity
     */
     <string name="menu_title">МЕНЮ</string>
     <string name="menu_shate">Поделиться с друзьями</string>
@@ -24,5 +24,22 @@
     </string>
 
     <string name="link_to_app_in_google_play">market://details?id=com.baviux.voicechanger</string>
+
+    /*
+        String for play activity
+    */
+    <string name="play_title">CRAZY DREAM</string>
+    <string name="play_subtitle">CHANNEL</string>
+
+    <string name="text_ready_to_play">Включай быстрее!</string>
+    <string name="text_connection">Подключение...</string>
+    <string name="text_play">Crazy Dream</string>
+    <string name="subtext_ready_to_play">Мы уже в эфире!</string>
+    <string name="subtext_connection">Сейчас все будет:)</string>
+    <string name="subtext_play">Мы уже в эфире!</string>
+
+    <string name="link_vk">https://vk.com/id5596909</string>
+    <string name="link_youtube">https://www.youtube.com/</string>
+    <string name="link_instagram">https://www.instagram.com/</string>
 
 </resources>

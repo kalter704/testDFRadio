@@ -15,7 +15,7 @@ import com.example.vasiliy.testdfradio.R;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final boolean DEBUG_MENU_ACTIVITY = true; // true = debug on, false = debug off
+    private final boolean DEBUG_MENU_ACTIVITY = false; // true = debug on, false = debug off
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         initAll();
     }

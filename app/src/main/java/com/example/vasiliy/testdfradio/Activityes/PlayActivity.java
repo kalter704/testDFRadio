@@ -1,15 +1,152 @@
 package com.example.vasiliy.testdfradio.Activityes;
 
+import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.R;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private final boolean DEBUG_PLAY_ACTIVITY = true; // true = debug on, false = debug off
+
+    public static final String EXTRA_POSITION = "id_radio";
+
+    ImageView mPlay;
+    ImageView mPause;
+    ProgressBar mProgressBar;
+
+    ImageView mUnLike;
+    ImageView mLike;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        initViews();
+
+        int postion = getIntent().getIntExtra(EXTRA_POSITION, 0);
+        ((TextView) findViewById(R.id.tvTitle)).setText(RadioChannels.getInstance().mRadioNames[postion]);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = null;
+        switch (view.getId()) {
+            case R.id.ivBack:
+                finish();
+                break;
+            case R.id.ivShare:
+                debugToast("ivShare");
+                intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_for_shape));
+                startActivity(Intent.createChooser(intent, getString(R.string.text_description_action)));
+                break;
+            case R.id.ivYouTube:
+                debugToast("ivYouTube");
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(getString(R.string.link_youtube)));
+                startActivity(intent);
+                break;
+            case R.id.ivInstagram:
+                debugToast("ivInstagram");
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(getString(R.string.link_instagram)));
+                startActivity(intent);
+                break;
+            case R.id.ivVK:
+                debugToast("ivVK");
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(getString(R.string.link_vk)));
+                startActivity(intent);
+                break;
+            case R.id.ivUnLike:
+                debugToast("ivUnLike");
+                setLike();
+                break;
+            case R.id.ivLike:
+                debugToast("ivLike");
+                setUnLike();
+                break;
+            case R.id.ivPlay:
+                debugToast("ivPlay");
+                play();
+                break;
+            case R.id.ivPause:
+                debugToast("ivPause");
+                pause();
+                break;
+        }
+    }
+
+    private void play() {
+        mPlay.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+        // TODO: дописать включение радио
+    }
+
+    private void pause() {
+        mPause.setVisibility(View.INVISIBLE);
+        mPlay.setVisibility(View.VISIBLE);
+        // TODO: дописать выключение радио
+    }
+
+    private void setLike() {
+        mLike.setVisibility(View.VISIBLE);
+        mUnLike.setVisibility(View.INVISIBLE);
+        // TODO: дописать логику сохранения лайка
+    }
+
+    private void setUnLike() {
+        mLike.setVisibility(View.INVISIBLE);
+        mUnLike.setVisibility(View.VISIBLE);
+        // TODO: дописать логику сохранения дизлайка
+    }
+
+    private void initViews() {
+        mPlay = (ImageView) findViewById(R.id.ivPlay);
+        mPlay.setVisibility(View.VISIBLE);
+        mPlay.setOnClickListener(this);
+
+        mPause = (ImageView) findViewById(R.id.ivPause);
+        mPause.setVisibility(View.INVISIBLE);
+        mPause.setOnClickListener(this);
+
+        mProgressBar = (ProgressBar) findViewById(R.id.pb);
+        mProgressBar.setVisibility(View.INVISIBLE);
+
+        findViewById(R.id.ivBack).setOnClickListener(this);
+        findViewById(R.id.ivShare).setOnClickListener(this);
+        findViewById(R.id.ivYouTube).setOnClickListener(this);
+        findViewById(R.id.ivInstagram).setOnClickListener(this);
+        findViewById(R.id.ivVK).setOnClickListener(this);
+
+        mUnLike = (ImageView) findViewById(R.id.ivUnLike);
+        mUnLike.setOnClickListener(this);
+        mUnLike.setVisibility(View.VISIBLE);
+
+        mLike = (ImageView) findViewById(R.id.ivLike);
+        mLike.setOnClickListener(this);
+        mLike.setVisibility(View.INVISIBLE);
+    }
+
+    private void debugToast(String str) {
+        if(DEBUG_PLAY_ACTIVITY) {
+            Toast.makeText(PlayActivity.this, str, Toast.LENGTH_SHORT).show();
+        }
     }
 }

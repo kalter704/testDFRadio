@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.Fragments.AllRadioFragment;
 import com.example.vasiliy.testdfradio.Adapters.ViewPagerAdapter;
 import com.example.vasiliy.testdfradio.Fragments.FavoriteRadioFragment;
@@ -17,10 +18,14 @@ import com.example.vasiliy.testdfradio.R;
 public class MainActivity extends AppCompatActivity {
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RadioChannels.getInstance().likes.add(0);
+        RadioChannels.getInstance().likes.add(2);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
