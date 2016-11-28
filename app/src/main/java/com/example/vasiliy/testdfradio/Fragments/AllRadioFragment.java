@@ -17,22 +17,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vasiliy.testdfradio.Activityes.PlayActivity;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.R;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 
 public class AllRadioFragment extends Fragment {
+
+    private ContentAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
-        ContentAdapter adapter = new ContentAdapter();
+        adapter = new ContentAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return recyclerView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -41,6 +52,8 @@ public class AllRadioFragment extends Fragment {
         public TextView mLocation;
         public ImageView mImgArrow;
         public ImageView mImgEqualizer;
+
+        private RadioChannels radioChannels = RadioChannels.getInstance();
 
         public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_radio_list, parent, false));
@@ -53,7 +66,7 @@ public class AllRadioFragment extends Fragment {
                 public void onClick(View view) {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, PlayActivity.class);
-                    intent.putExtra(PlayActivity.EXTRA_POSITION, getAdapterPosition());
+                    intent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mIds[getAdapterPosition()]);
                     context.startActivity(intent);
                 }
             });
@@ -79,13 +92,22 @@ public class AllRadioFragment extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.mNameDadio.setText(radioChannels.mRadioNames[position]);
             holder.mLocation.setText(radioChannels.mLocations[position]);
-            /*
             AnimationDrawable animation = null;
-            animation = (AnimationDrawable) holder.mImg.getBackground();
-            if(animation != null) {
-                animation.start();
+            animation = (AnimationDrawable) holder.mImgEqualizer.getBackground();
+            if((radioChannels.mIds[position] == radioChannels.mPlayRadioWithId)) {
+                holder.mImgArrow.setVisibility(View.INVISIBLE);
+                holder.mImgEqualizer.setVisibility(View.VISIBLE);
+                if (animation != null) {
+                    animation.stop();
+                    animation.start();
+                }
+            } else {
+                holder.mImgArrow.setVisibility(View.VISIBLE);
+                holder.mImgEqualizer.setVisibility(View.INVISIBLE);
+                if (animation != null) {
+                    animation.stop();
+                }
             }
-            */
         }
 
         @Override

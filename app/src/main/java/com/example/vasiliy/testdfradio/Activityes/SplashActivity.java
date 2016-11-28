@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private int timeForSplashAtivity = 0;
+    private int timeForSplashAtivity = 1;
     //private int timeForSplashAtivity = 5;
     private int iterationTime = 100;
 
@@ -37,6 +38,6 @@ public class SplashActivity extends AppCompatActivity {
         };
         splashTimer.start();
 
-        // TODO: определение любимых радио
+        RadioChannels.getInstance().loadLikes(this);
     }
 }

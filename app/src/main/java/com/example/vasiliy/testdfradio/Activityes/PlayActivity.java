@@ -18,16 +18,20 @@ import com.example.vasiliy.testdfradio.R;
 
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private final boolean DEBUG_PLAY_ACTIVITY = true; // true = debug on, false = debug off
+    private final boolean DEBUG_PLAY_ACTIVITY = false; // true = debug on, false = debug off
 
     public static final String EXTRA_POSITION = "id_radio";
 
-    RelativeLayout mPlay;
-    RelativeLayout mPause;
-    ProgressBar mProgressBar;
+    private RelativeLayout mPlay;
+    private RelativeLayout mPause;
+    private ProgressBar mProgressBar;
 
-    ImageView mUnLike;
-    ImageView mLike;
+    private ImageView mUnLike;
+    private ImageView mLike;
+
+    private int mID;
+
+    private RadioChannels radioChannels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +43,17 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         initViews();
 
-        int postion = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        ((TextView) findViewById(R.id.tvTitle)).setText(RadioChannels.getInstance().mRadioNames[postion]);
+        radioChannels = RadioChannels.getInstance();
+
+        mID = getIntent().getIntExtra(EXTRA_POSITION, 0);
+        ((TextView) findViewById(R.id.tvTitle)).setText(radioChannels.mRadioNames[mID]);
+
+        if(radioChannels.mLikes.contains(mID)) {
+            setLike();
+        } else {
+            setUnLike();
+        }
+
     }
 
     @Override
@@ -78,18 +91,22 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ivUnLike:
                 debugToast("ivUnLike");
                 setLike();
+                RadioChannels.getInstance().saveLike(this, mID);
                 break;
             case R.id.ivLike:
                 debugToast("ivLike");
                 setUnLike();
+                RadioChannels.getInstance().saveDislike(this, mID);
                 break;
             case R.id.rlPlay:
                 debugToast("ivPlay");
                 play();
+                RadioChannels.getInstance().mPlayRadioWithId = mID;
                 break;
             case R.id.rlPause:
                 debugToast("ivPause");
                 pause();
+                RadioChannels.getInstance().mPlayRadioWithId = -1;
                 break;
         }
     }

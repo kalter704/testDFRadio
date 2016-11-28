@@ -42,4 +42,10 @@
     <string name="link_youtube">https://www.youtube.com/</string>
     <string name="link_instagram">https://www.instagram.com/</string>
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    <string name="file_name">likes_file</string>
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 </resources>

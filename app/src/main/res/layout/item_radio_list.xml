@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="7px"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:background="@drawable/recycler_item_background">
 
         <ImageView
             android:id="@+id/imageView5"
@@ -67,7 +69,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7px"
         android:scaleType="fitXY"
-        android:src="@drawable/divider1" />
+        android:src="@drawable/divider1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
 </LinearLayout>

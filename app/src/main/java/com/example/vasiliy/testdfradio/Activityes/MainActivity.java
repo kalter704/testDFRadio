@@ -17,14 +17,15 @@ import com.example.vasiliy.testdfradio.R;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RadioChannels.getInstance().likes.add(0);
-        RadioChannels.getInstance().likes.add(2);
+        //RadioChannels.getInstance().mLikes.clear();
+        //RadioChannels.getInstance().mLikes.add(0);
+        //RadioChannels.getInstance().mLikes.add(2);
+        //RadioChannels.getInstance().mPlayRadioWithId = 0;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
