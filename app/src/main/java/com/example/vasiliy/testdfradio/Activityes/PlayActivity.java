@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +22,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final String EXTRA_POSITION = "id_radio";
 
-    ImageView mPlay;
-    ImageView mPause;
+    RelativeLayout mPlay;
+    RelativeLayout mPause;
     ProgressBar mProgressBar;
 
     ImageView mUnLike;
@@ -46,10 +47,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
-            case R.id.ivBack:
+            case R.id.rlBack:
                 finish();
                 break;
-            case R.id.ivShare:
+            case R.id.rlShare:
                 debugToast("ivShare");
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
@@ -82,11 +83,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 debugToast("ivLike");
                 setUnLike();
                 break;
-            case R.id.ivPlay:
+            case R.id.rlPlay:
                 debugToast("ivPlay");
                 play();
                 break;
-            case R.id.ivPause:
+            case R.id.rlPause:
                 debugToast("ivPause");
                 pause();
                 break;
@@ -118,19 +119,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
-        mPlay = (ImageView) findViewById(R.id.ivPlay);
-        mPlay.setVisibility(View.VISIBLE);
+        mPlay = (RelativeLayout) findViewById(R.id.rlPlay);
+        mPlay.setVisibility(View.INVISIBLE);
         mPlay.setOnClickListener(this);
 
-        mPause = (ImageView) findViewById(R.id.ivPause);
-        mPause.setVisibility(View.INVISIBLE);
+        mPause = (RelativeLayout) findViewById(R.id.rlPause);
+        mPause.setVisibility(View.VISIBLE);
         mPause.setOnClickListener(this);
 
         mProgressBar = (ProgressBar) findViewById(R.id.pb);
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        findViewById(R.id.ivBack).setOnClickListener(this);
-        findViewById(R.id.ivShare).setOnClickListener(this);
+        findViewById(R.id.rlBack).setOnClickListener(this);
+        findViewById(R.id.rlShare).setOnClickListener(this);
         findViewById(R.id.ivYouTube).setOnClickListener(this);
         findViewById(R.id.ivInstagram).setOnClickListener(this);
         findViewById(R.id.ivVK).setOnClickListener(this);

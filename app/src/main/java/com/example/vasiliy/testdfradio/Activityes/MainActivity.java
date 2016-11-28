@@ -18,7 +18,6 @@ import com.example.vasiliy.testdfradio.R;
 public class MainActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +39,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        (findViewById(R.id.ivMenu)).setOnClickListener(new View.OnClickListener() {
+        (findViewById(R.id.rlMenu)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, MenuActivity.class));
             }
         });
     }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new AllRadioFragment(), getString(R.string.tab_all));

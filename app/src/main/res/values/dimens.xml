@@ -17,9 +17,12 @@
 
     <dimen name="space_between_titles_in_toolbar">-7dp</dimen>
 
+    <!--
     <dimen name="menu_activity_horizontal_margin">32dp</dimen>
+    -->
     <dimen name="menu_margin_top">20dp</dimen>
     <dimen name="menu_margin_between_items">12dp</dimen>
-    <dimen name="menu_margin_top_text_items">-5dp</dimen>
+    <dimen name="menu_margin_top_text_items">0dp</dimen>
+    <dimen name="menu_icons_margin_right">20dp</dimen>
 
 </resources>

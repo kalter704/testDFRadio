@@ -16,8 +16,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:contentInsetEnd="@dimen/menu_activity_horizontal_margin"
-            app:contentInsetStart="@dimen/menu_activity_horizontal_margin">
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp">
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,18 +27,27 @@
                 android:orientation="horizontal"
                 tools:background="#000000">
 
-
-                <ImageView
-                    android:id="@+id/ivBack"
+                <RelativeLayout
+                    android:id="@+id/rlBack"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    app:srcCompat="@drawable/ic_arrow_back" />
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_background"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
+
+                    <ImageView
+                        android:id="@+id/ivBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/ic_arrow_back" />
+                </RelativeLayout>
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -59,10 +68,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/menu_activity_horizontal_margin"
-        android:layout_marginRight="@dimen/menu_activity_horizontal_margin"
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,17 +76,14 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/menu_margin_top"
-                android:orientation="horizontal"
-                android:id="@+id/llShare">
+                android:id="@+id/llShare"
+                style="@style/style_layout_item_background">
 
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/menu_activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/menu_icons_margin_right"
                     app:srcCompat="@drawable/icon_share" />
 
                 <TextView
@@ -88,24 +91,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/menu_margin_top_text_items"
                     android:text="@string/menu_shate"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="@dimen/text_size_menu_items"
-                    android:layout_marginTop="@dimen/menu_margin_top_text_items"/>
+                    android:textSize="@dimen/text_size_menu_items" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/menu_margin_between_items"
                 android:id="@+id/llInfo"
-                android:orientation="horizontal">
+                style="@style/style_layout_item_background">
 
                 <ImageView
                     android:id="@+id/imageView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/menu_activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/menu_icons_margin_right"
                     app:srcCompat="@drawable/icon_info" />
 
                 <TextView
@@ -113,24 +113,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/menu_margin_top_text_items"
                     android:text="@string/menu_info"
                     android:textColor="@color/textColorPrimary"
-                    android:layout_marginTop="@dimen/menu_margin_top_text_items"
                     android:textSize="@dimen/text_size_menu_items" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/menu_margin_between_items"
-                android:orientation="horizontal"
-                android:id="@+id/llStar">
+                android:id="@+id/llStar"
+                style="@style/style_layout_item_background">
 
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/menu_activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/menu_icons_margin_right"
                     app:srcCompat="@drawable/icon_star" />
 
                 <TextView
@@ -138,24 +135,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/menu_margin_top_text_items"
                     android:text="@string/menu_star"
                     android:textColor="@color/textColorPrimary"
-                    android:layout_marginTop="@dimen/menu_margin_top_text_items"
                     android:textSize="@dimen/text_size_menu_items" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/menu_margin_between_items"
-                android:orientation="horizontal"
-                android:id="@+id/llMoney">
+                android:id="@+id/llMoney"
+                style="@style/style_layout_item_background">
 
                 <ImageView
                     android:id="@+id/imageView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/menu_activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/menu_icons_margin_right"
                     app:srcCompat="@drawable/icon_money" />
 
                 <TextView
@@ -170,17 +164,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/menu_margin_between_items"
-                android:orientation="horizontal"
-                android:id="@+id/llEmail">
+                android:id="@+id/llEmail"
+                style="@style/style_layout_item_background">
 
                 <ImageView
                     android:id="@+id/imageView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/menu_activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/menu_icons_margin_right"
                     app:srcCompat="@drawable/icon_email" />
 
                 <TextView

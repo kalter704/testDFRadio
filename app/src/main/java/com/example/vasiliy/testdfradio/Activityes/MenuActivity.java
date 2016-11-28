@@ -30,7 +30,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initAll() {
-        (findViewById(R.id.ivBack)).setOnClickListener(this);
+        (findViewById(R.id.rlBack)).setOnClickListener(this);
         (findViewById(R.id.llShare)).setOnClickListener(this);
         (findViewById(R.id.llInfo)).setOnClickListener(this);
         (findViewById(R.id.llStar)).setOnClickListener(this);
@@ -42,7 +42,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
-            case R.id.ivBack:
+            case R.id.rlBack:
                 finish();
                 break;
             case R.id.llShare:

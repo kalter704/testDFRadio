@@ -15,26 +15,37 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:contentInsetEnd="16dp">
+            app:contentInsetStart="0dp">
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 tools:background="#000000">
 
-                <ImageView
-                    android:id="@+id/ivMenu"
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_menu"
-                    android:layout_centerVertical="true" />
+                    android:layout_height="match_parent"
+                    android:id="@+id/rlMenu"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/button_background">
+
+                    <ImageView
+                        android:id="@+id/ivMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/ic_menu" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
@@ -42,10 +53,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/space_between_titles_in_toolbar"
                         android:text="@string/toolbar_title"
                         android:textColor="@color/textColorPrimary"
                         android:textSize="@dimen/text_size_title_toolbar"
-                        android:layout_marginBottom="@dimen/space_between_titles_in_toolbar"
                         android:textStyle="normal|bold" />
 
                     <TextView
@@ -53,10 +64,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="0dp"
                         android:text="@string/toolbar_subtitle"
                         android:textColor="@color/textColorSecondary"
-                        android:textSize="@dimen/text_size_subtitle_toolbar"
-                        android:layout_marginTop="0dp"/>
+                        android:textSize="@dimen/text_size_subtitle_toolbar" />
                 </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
