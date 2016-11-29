@@ -61,7 +61,7 @@ public class FavoriteRadioFragment extends Fragment {
                 public void onClick(View view) {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, PlayActivity.class);
-                    intent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mIds[radioChannels.mLikes.get(getAdapterPosition())]);
+                    intent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mIds.get(radioChannels.mLikes.get(getAdapterPosition())));
                     context.startActivity(intent);
                 }
             });
@@ -98,7 +98,7 @@ public class FavoriteRadioFragment extends Fragment {
             holder.mLocation.setText(radioChannels.mLocations[radioChannels.mLikes.get(position)]);
             AnimationDrawable animation = null;
             animation = (AnimationDrawable) holder.mImgEqualizer.getBackground();
-            if((radioChannels.mIds[radioChannels.mLikes.get(position)] == radioChannels.mPlayRadioWithId)) {
+            if((radioChannels.mIds.get(radioChannels.mLikes.get(position)) == radioChannels.mPlayRadioWithId)) {
                 holder.mImgArrow.setVisibility(View.INVISIBLE);
                 holder.mImgEqualizer.setVisibility(View.VISIBLE);
                 if (animation != null) {

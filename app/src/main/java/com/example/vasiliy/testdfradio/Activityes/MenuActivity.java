@@ -26,10 +26,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-        initAll();
+        initializeUI();
     }
 
-    private void initAll() {
+    private void initializeUI() {
         (findViewById(R.id.rlBack)).setOnClickListener(this);
         (findViewById(R.id.llShare)).setOnClickListener(this);
         (findViewById(R.id.llInfo)).setOnClickListener(this);

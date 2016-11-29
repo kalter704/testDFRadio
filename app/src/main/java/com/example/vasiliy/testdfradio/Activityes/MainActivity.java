@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-        initViews();
+        initializeUI();
     }
 
-    private void initViews() {
+    private void initializeUI() {
         (findViewById(R.id.rlMenu)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

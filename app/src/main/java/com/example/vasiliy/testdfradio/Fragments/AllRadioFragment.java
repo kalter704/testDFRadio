@@ -66,7 +66,7 @@ public class AllRadioFragment extends Fragment {
                 public void onClick(View view) {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, PlayActivity.class);
-                    intent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mIds[getAdapterPosition()]);
+                    intent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mIds.get(getAdapterPosition()));
                     context.startActivity(intent);
                 }
             });
@@ -80,7 +80,7 @@ public class AllRadioFragment extends Fragment {
 
         public ContentAdapter() {
             radioChannels = RadioChannels.getInstance();
-            LENGTH = radioChannels.mIds.length;
+            LENGTH = radioChannels.mIds.size();
         }
 
         @Override
@@ -94,7 +94,7 @@ public class AllRadioFragment extends Fragment {
             holder.mLocation.setText(radioChannels.mLocations[position]);
             AnimationDrawable animation = null;
             animation = (AnimationDrawable) holder.mImgEqualizer.getBackground();
-            if((radioChannels.mIds[position] == radioChannels.mPlayRadioWithId)) {
+            if((radioChannels.mIds.get(position) == radioChannels.mPlayRadioWithId)) {
                 holder.mImgArrow.setVisibility(View.INVISIBLE);
                 holder.mImgEqualizer.setVisibility(View.VISIBLE);
                 if (animation != null) {

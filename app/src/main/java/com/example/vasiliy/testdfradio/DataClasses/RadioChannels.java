@@ -29,12 +29,21 @@ public class RadioChannels {
     private RadioChannels() {
     }
 
+/*
     public int mIds[] = {
             0,
             1,
             2,
             3
     };
+    */
+
+    public List<Integer> mIds = new ArrayList<Integer>() {{
+        add(0);
+        add(1);
+        add(2);
+        add(3);
+    }};
 
     public String mRadioNames[] = {
             "CRAZY DREAM1",
@@ -49,6 +58,15 @@ public class RadioChannels {
             "Samara, Russia",
             "Rostov, Russia"
     };
+
+    /*
+    public String mLinks[] = {
+            "http://streaming.shoutcast.com/80sPlanet?lang=ru-RU%2cru%3bq%3d0.8%2cen-US%3bq%3d0.6%2cen%3bq%3d0.4",
+            "http://streaming.streamonomy.com/keepfree60s",
+            "http://streaming.shoutcast.com/80sPlanet?lang=ru-RU%2cru%3bq%3d0.8%2cen-US%3bq%3d0.6%2cen%3bq%3d0.4",
+            "http://streaming.streamonomy.com/keepfree60s"
+    };
+    */
 
     public String mLinks[] = {
             "http://proxy.sidedark-warez.pl/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
@@ -86,8 +104,8 @@ public class RadioChannels {
     public void loadLikes(Context context) {
         SharedPreferences sPref = context.getSharedPreferences(context.getString(R.string.file_name), MODE_PRIVATE);
         mLikes.clear();
-        for(int i = 0; i < mIds.length; i++) {
-            if(sPref.getString(String.valueOf(mIds[i]), "").equals("like")) {
+        for(int i = 0; i < mIds.size(); i++) {
+            if(sPref.getString(String.valueOf(mIds.get(i)), "").equals("like")) {
                 mLikes.add(i);
             }
         }

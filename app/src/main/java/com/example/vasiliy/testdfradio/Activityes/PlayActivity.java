@@ -1,11 +1,13 @@
 package com.example.vasiliy.testdfradio.Activityes;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -16,7 +18,10 @@ import android.widget.Toast;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.R;
 
-public class PlayActivity extends AppCompatActivity implements View.OnClickListener{
+import co.mobiwise.library.radio.RadioListener;
+import co.mobiwise.library.radio.RadioManager;
+
+public class PlayActivity extends AppCompatActivity implements View.OnClickListener, RadioListener {
 
     private final boolean DEBUG_PLAY_ACTIVITY = false; // true = debug on, false = debug off
 
@@ -31,7 +36,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     private int mID;
 
-    private RadioChannels radioChannels;
+    RadioManager mRadioManager;
+
+    private RadioChannels mRadioChannels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +48,23 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        initViews();
+        initializeUI();
 
-        radioChannels = RadioChannels.getInstance();
+        mRadioManager = RadioManager.with(this);
+        mRadioManager.registerListener(this);
+        mRadioManager.setLogging(true);
+        //mRadioManager.updateNotification("singer", "sonr", R.drawable.df_logo, R.drawable.df_logo);
+
+        mRadioChannels = RadioChannels.getInstance();
 
         mID = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        ((TextView) findViewById(R.id.tvTitle)).setText(radioChannels.mRadioNames[mID]);
+        ((TextView) findViewById(R.id.tvTitle)).setText(mRadioChannels.mRadioNames[mID]);
 
-        if(radioChannels.mLikes.contains(mID)) {
+        if (mRadioChannels.mLikes.contains(mID)) {
             setLike();
         } else {
             setUnLike();
         }
-
     }
 
     @Override
@@ -100,48 +111,55 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.rlPlay:
                 debugToast("ivPlay");
-                play();
+                showProgressBar();
                 RadioChannels.getInstance().mPlayRadioWithId = mID;
+                mRadioManager.startRadio(mRadioChannels.mLinks[mRadioChannels.mIds.indexOf(mID)]);
+                Log.d("radio", mRadioChannels.mLinks[mRadioChannels.mIds.indexOf(mID)]);
                 break;
             case R.id.rlPause:
                 debugToast("ivPause");
-                pause();
+                showPlay();
                 RadioChannels.getInstance().mPlayRadioWithId = -1;
+                mRadioManager.stopRadio();
                 break;
         }
     }
 
-    private void play() {
-        mPlay.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
-        // TODO: дописать включение радио
+    private void showPlay() {
+        mPause.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mPlay.setVisibility(View.VISIBLE);
     }
 
-    private void pause() {
+    private void showProgressBar() {
+        mPlay.setVisibility(View.INVISIBLE);
         mPause.setVisibility(View.INVISIBLE);
-        mPlay.setVisibility(View.VISIBLE);
-        // TODO: дописать выключение радио
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void showPause() {
+        mPlay.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mPause.setVisibility(View.VISIBLE);
     }
 
     private void setLike() {
         mLike.setVisibility(View.VISIBLE);
         mUnLike.setVisibility(View.INVISIBLE);
-        // TODO: дописать логику сохранения лайка
     }
 
     private void setUnLike() {
         mLike.setVisibility(View.INVISIBLE);
         mUnLike.setVisibility(View.VISIBLE);
-        // TODO: дописать логику сохранения дизлайка
     }
 
-    private void initViews() {
+    private void initializeUI() {
         mPlay = (RelativeLayout) findViewById(R.id.rlPlay);
-        mPlay.setVisibility(View.INVISIBLE);
+        mPlay.setVisibility(View.VISIBLE);
         mPlay.setOnClickListener(this);
 
         mPause = (RelativeLayout) findViewById(R.id.rlPause);
-        mPause.setVisibility(View.VISIBLE);
+        mPause.setVisibility(View.INVISIBLE);
         mPause.setOnClickListener(this);
 
         mProgressBar = (ProgressBar) findViewById(R.id.pb);
@@ -162,9 +180,97 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mLike.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mRadioManager.connect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mRadioChannels.mPlayRadioWithId == mID){
+            showPause();
+        } else {
+            showPlay();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRadioManager.disconnect();
+    }
+
+    @Override
+    public void onRadioLoading() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here.
+                //Toast.makeText(getApplicationContext(), "onRadioLoading", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    @Override
+    public void onRadioConnected() {
+        mRadioManager.updateNotificationSmallImage(R.drawable.df_logo);
+        mRadioManager.updateNotificationImage(R.drawable.df_logo);
+        //mRadioManager.updateNotificationImage(BitmapFactory.decodeResource(getResources(), R.drawable.df_logo));
+    }
+
+    @Override
+    public void onRadioStarted() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here.
+                //Toast.makeText(getApplicationContext(), "onRadioStarted", Toast.LENGTH_SHORT).show();
+                showPause();
+                RadioChannels.getInstance().mPlayRadioWithId = mID;
+            }
+        });
+    }
+
+    @Override
+    public void onRadioStopped() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here
+                //Toast.makeText(getApplicationContext(), "onRadioStopped", Toast.LENGTH_SHORT).show();
+                showPlay();
+                RadioChannels.getInstance().mPlayRadioWithId = -1;
+            }
+        });
+
+    }
+
+    @Override
+    public void onMetaDataReceived(String s, String s2) {
+
+    }
+
+    @Override
+    public void onError() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here
+                //Toast.makeText(getApplicationContext(), "onError", Toast.LENGTH_SHORT).show();
+                showPlay();
+                RadioChannels.getInstance().mPlayRadioWithId = -1;
+            }
+        });
+    }
+
     private void debugToast(String str) {
-        if(DEBUG_PLAY_ACTIVITY) {
+        if (DEBUG_PLAY_ACTIVITY) {
             Toast.makeText(PlayActivity.this, str, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
