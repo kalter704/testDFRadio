@@ -18,6 +18,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        RadioChannels.getInstance().loadLikes(this);
+
         Thread splashTimer = new Thread() {
             public void run() {
                 try {
@@ -26,7 +28,9 @@ public class SplashActivity extends AppCompatActivity {
                         sleep(iterationTime);
                         splashTimer += iterationTime;
                     }
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
@@ -37,7 +41,5 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         splashTimer.start();
-
-        RadioChannels.getInstance().loadLikes(this);
     }
 }

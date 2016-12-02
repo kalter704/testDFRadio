@@ -1,11 +1,9 @@
 package com.example.vasiliy.testdfradio.Activityes;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +32,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mUnLike;
     private ImageView mLike;
 
+    private TextView tvState;
+    private TextView tvSubstate;
+
     private int mID;
 
     RadioManager mRadioManager;
@@ -58,7 +59,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mRadioChannels = RadioChannels.getInstance();
 
         mID = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        ((TextView) findViewById(R.id.tvTitle)).setText(mRadioChannels.mRadioNames[mID]);
+        ((TextView) findViewById(R.id.tvTitle)).setText(mRadioChannels.mRadioNames[mRadioChannels.mIds.indexOf(mID)]);
+
+        tvState = (TextView) findViewById(R.id.tvState);
+        tvSubstate = (TextView) findViewById(R.id.tvSubstate);
 
         if (mRadioChannels.mLikes.contains(mID)) {
             setLike();
@@ -111,7 +115,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.rlPlay:
                 debugToast("ivPlay");
-                showProgressBar();
+                //showProgressBar();
+                mRadioManager.updateNotificationSmallImage(R.drawable.df_logo);
+                mRadioManager.updateNotificationImage(R.drawable.df_logo);
                 RadioChannels.getInstance().mPlayRadioWithId = mID;
                 mRadioManager.startRadio(mRadioChannels.mLinks[mRadioChannels.mIds.indexOf(mID)]);
                 Log.d("radio", mRadioChannels.mLinks[mRadioChannels.mIds.indexOf(mID)]);
@@ -129,18 +135,28 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mPause.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
         mPlay.setVisibility(View.VISIBLE);
+        tvState.setText(getString(R.string.text_ready_to_play));
+        tvSubstate.setText(getString(R.string.subtext_ready_to_play));
     }
 
     private void showProgressBar() {
         mPlay.setVisibility(View.INVISIBLE);
         mPause.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
+        tvState.setText(getString(R.string.text_connection));
+        tvSubstate.setText(getString(R.string.subtext_connection));
     }
 
     private void showPause() {
         mPlay.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
         mPause.setVisibility(View.VISIBLE);
+        tvState.setText(mRadioChannels.mRadioNames[mRadioChannels.mIds.indexOf(mID)]);
+        if(mRadioChannels.mMetaDataPlayingRadio != null) {
+            tvSubstate.setText(mRadioChannels.mMetaDataPlayingRadio);
+        } else {
+            tvSubstate.setText(getString(R.string.subtext_play));
+        }
     }
 
     private void setLike() {
@@ -183,23 +199,33 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        mRadioManager.connect();
+        if(mRadioManager.getService() == null) {
+            mRadioManager.connect();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(mRadioChannels.mPlayRadioWithId == mID){
-            showPause();
+            if(mRadioManager.isPlaying()) {
+                showPause();
+            } else {
+                showPlay();
+            }
         } else {
             showPlay();
         }
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        mRadioManager.disconnect();
     }
 
     @Override
@@ -209,6 +235,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 //TODO Do UI works here.
                 //Toast.makeText(getApplicationContext(), "onRadioLoading", Toast.LENGTH_SHORT).show();
+                showProgressBar();
             }
         });
 
@@ -216,8 +243,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRadioConnected() {
-        mRadioManager.updateNotificationSmallImage(R.drawable.df_logo);
-        mRadioManager.updateNotificationImage(R.drawable.df_logo);
         //mRadioManager.updateNotificationImage(BitmapFactory.decodeResource(getResources(), R.drawable.df_logo));
     }
 
@@ -241,16 +266,30 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 //TODO Do UI works here
                 //Toast.makeText(getApplicationContext(), "onRadioStopped", Toast.LENGTH_SHORT).show();
-                showPlay();
-                RadioChannels.getInstance().mPlayRadioWithId = -1;
+                //showPlay();
+                //RadioChannels.getInstance().mPlayRadioWithId = -1;
+                mRadioChannels.mMetaDataPlayingRadio = null;
             }
         });
-
     }
 
     @Override
     public void onMetaDataReceived(String s, String s2) {
-
+        final String ss = s;
+        final String ss2 = s2;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here
+                Log.d("MetaDataDebug", "s = " + ss);
+                Log.d("MetaDataDebug", "s2 = " + ss2);
+                Log.d("MetaDataDebug", "\n");
+                if("StreamTitle".equals(ss)) {
+                    tvSubstate.setText(ss2);
+                    mRadioChannels.mMetaDataPlayingRadio = ss2;
+                }
+            }
+        });
     }
 
     @Override

@@ -139,6 +139,7 @@ public class RadioManager implements IRadioManager {
     @Override
     public void connect() {
         log("Requested to connect service.");
+        Log.d("RadioPlayerservice", "RadioManager connect()");
         Intent intent = new Intent(mContext, RadioPlayerService.class);
         mContext.bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -150,6 +151,8 @@ public class RadioManager implements IRadioManager {
     public void disconnect() {
         log("Service Disconnected.");
         mContext.unbindService(mServiceConnection);
+        //mService = null;
+
     }
 
     /**
@@ -170,6 +173,16 @@ public class RadioManager implements IRadioManager {
     public void updateNotificationSmallImage(int smallArt) {
         if(mService != null)
             mService.updateNotificationSmallImage(smallArt);
+    }
+
+    /**
+     * Update notification data
+     * @param songName
+     */
+    @Override
+    public void updateNotificationSongName(String songName) {
+        if(mService != null)
+            mService.updateNotificationSongName(songName);
     }
 
     /**
@@ -208,6 +221,8 @@ public class RadioManager implements IRadioManager {
 
             log("Service Connected.");
 
+            Log.d("RadioPlayerservice", "RadioManager onServiceConnected()");
+
             mService = ((RadioPlayerService.LocalBinder) binder).getService();
             mService.setLogging(isLogging);
             isServiceConnected = true;
@@ -222,6 +237,7 @@ public class RadioManager implements IRadioManager {
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
+            isServiceConnected = false;
         }
     };
 

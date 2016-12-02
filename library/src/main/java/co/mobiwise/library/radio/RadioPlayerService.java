@@ -16,6 +16,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.spoledge.aacdecoder.MultiPlayer;
 import com.spoledge.aacdecoder.PlayerCallback;
@@ -121,6 +122,8 @@ public class RadioPlayerService extends Service implements PlayerCallback {
      */
     private boolean isClosedFromNotification = false;
 
+    private boolean isDestroy = false;
+
     /**
      * Incoming calls interrupt radio if it is playing.
      * Check if this is true or not after hang up;
@@ -203,6 +206,8 @@ public class RadioPlayerService extends Service implements PlayerCallback {
     public void onCreate() {
         super.onCreate();
 
+        Log.d("RadioPlayerservice", "onCreate");
+
         mListenerList = new ArrayList<>();
 
         mRadioState = State.IDLE;
@@ -216,6 +221,15 @@ public class RadioPlayerService extends Service implements PlayerCallback {
 
         if (mTelephonyManager != null)
             mTelephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("RadioPlayerservice", "onDestroy");
+        isDestroy = true;
+        stopFromNotification();
+        if(mNotificationManager != null) mNotificationManager.cancelAll();
     }
 
     /**
@@ -245,6 +259,7 @@ public class RadioPlayerService extends Service implements PlayerCallback {
                 getPlayer().playAsync(mRadioUrl);
             }
         }
+
     }
 
     public void stop() {
@@ -258,6 +273,9 @@ public class RadioPlayerService extends Service implements PlayerCallback {
     @Override
     public void playerStarted() {
         mRadioState = State.PLAYING;
+
+        songName = "В эфире!!!";
+
         buildNotification2();
         mLock = false;
         notifyRadioStarted();
@@ -301,13 +319,14 @@ public class RadioPlayerService extends Service implements PlayerCallback {
          * call buildNotification().
          */
         if (!isClosedFromNotification)
-            //buildNotification();
-            if(mNotificationManager != null) mNotificationManager.cancelAll();
+            buildNotification2();
         else
             isClosedFromNotification = false;
 
         mLock = false;
-        notifyRadioStopped();
+        if(!isDestroy) {
+            notifyRadioStopped();
+        }
         log("Player stopped. State : " + mRadioState);
 
         if (isSwitching)
@@ -350,11 +369,16 @@ public class RadioPlayerService extends Service implements PlayerCallback {
     }
 
     private void notifyRadioStopped() {
+        songName = null;
         for (RadioListener mRadioListener : mListenerList)
             mRadioListener.onRadioStopped();
     }
 
     private void notifyMetaDataChanged(String s, String s2) {
+        if("StreamTitle".equals(s)) {
+            songName = s2;
+            buildNotification2();
+        }
         for (RadioListener mRadioListener : mListenerList)
             mRadioListener.onMetaDataReceived(s, s2);
     }
@@ -595,7 +619,8 @@ public class RadioPlayerService extends Service implements PlayerCallback {
         if (artImage == null)
             artImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_art);
 
-        mNotificationTemplate.setTextViewText(R.id.notification_line_one, singerName);
+        //mNotificationTemplate.setTextViewText(R.id.notification_line_one, singerName);
+        mNotificationTemplate.setTextViewText(R.id.notification_line_one, "Dance Family Radio");
         mNotificationTemplate.setTextViewText(R.id.notification_line_two, songName);
         mNotificationTemplate.setImageViewResource(R.id.notification_play, isPlaying() ? R.drawable.btn_playback_pause : R.drawable.btn_playback_play);
         mNotificationTemplate.setImageViewBitmap(R.id.notification_image, artImage);
@@ -628,6 +653,11 @@ public class RadioPlayerService extends Service implements PlayerCallback {
 
     public void updateNotificationSmallImage(int smallImage) {
         this.smallImage = smallImage;
+    }
+
+    public void updateNotificationSongName(String songName) {
+        this.songName = songName;
+        buildNotification2();
     }
 
     public void updateNotification(String singerName, String songName, int smallImage, int artImage) {

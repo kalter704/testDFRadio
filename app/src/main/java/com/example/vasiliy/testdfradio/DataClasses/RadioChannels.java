@@ -43,20 +43,26 @@ public class RadioChannels {
         add(1);
         add(2);
         add(3);
+        add(4);
+        add(5);
     }};
 
     public String mRadioNames[] = {
             "CRAZY DREAM1",
             "CRAZY DREAM2",
             "CRAZY DREAM3",
-            "CRAZY DREAM4"
+            "CRAZY DREAM4",
+            "Русский хит",
+            "Dace Wave"
     };
 
     public String mLocations[] = {
             "Moscow, Russia",
             "Piter, Russia",
             "Samara, Russia",
-            "Rostov, Russia"
+            "Rostov, Russia",
+            "Типа Россия",
+            "ХЗ откуда"
     };
 
     /*
@@ -72,13 +78,16 @@ public class RadioChannels {
             "http://proxy.sidedark-warez.pl/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
             "http://leather-bg.com/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
             "http://prx.afkcz.eu/prx/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
-            "http://efintrust.com/muro/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D"
+            "http://efintrust.com/muro/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
+            "http://ruhit.imgradio.pro/RusHit48?icy=http",
+            "http://stream.dancewave.online:8080/dance.mp3?icy=http"
     };
 
     // Указать индекс (i - 1)
     public List<Integer> mLikes = new ArrayList<>();
 
     public int mPlayRadioWithId = -1;
+    public String mMetaDataPlayingRadio = null;
 
     public void saveLike(Context context, int n) {
         if(!mLikes.contains(n)) {

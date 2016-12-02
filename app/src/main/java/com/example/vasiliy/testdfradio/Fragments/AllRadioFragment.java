@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,17 +24,34 @@ import com.example.vasiliy.testdfradio.Activityes.PlayActivity;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.R;
 
+import co.mobiwise.library.radio.RadioListener;
+import co.mobiwise.library.radio.RadioManager;
+
 import static android.widget.Toast.LENGTH_SHORT;
 
 
-public class AllRadioFragment extends Fragment {
+public class AllRadioFragment extends Fragment implements RadioListener {
 
     private ContentAdapter adapter;
+
+    public Context context;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        RadioManager.with(getActivity()).registerListener(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
-        adapter = new ContentAdapter();
+        adapter = new ContentAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -44,6 +62,62 @@ public class AllRadioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //RadioManager.with(getActivity()).unregisterListener(this);
+    }
+
+
+    @Override
+    public void onRadioLoading() {
+
+    }
+
+    @Override
+    public void onRadioConnected() {
+
+    }
+
+    @Override
+    public void onRadioStarted() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here
+                //RadioChannels.getInstance().mPlayRadioWithId = -1;
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onRadioStopped() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here
+                //RadioChannels.getInstance().mPlayRadioWithId = -1;
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onMetaDataReceived(String s, String s2) {
+
+    }
+
+    @Override
+    public void onError() {
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -77,10 +151,12 @@ public class AllRadioFragment extends Fragment {
 
         private static int LENGTH = 0;
         RadioChannels radioChannels;
+        Context context;
 
-        public ContentAdapter() {
+        public ContentAdapter(Context context) {
             radioChannels = RadioChannels.getInstance();
             LENGTH = radioChannels.mIds.size();
+            this.context = context;
         }
 
         @Override
@@ -95,11 +171,19 @@ public class AllRadioFragment extends Fragment {
             AnimationDrawable animation = null;
             animation = (AnimationDrawable) holder.mImgEqualizer.getBackground();
             if((radioChannels.mIds.get(position) == radioChannels.mPlayRadioWithId)) {
-                holder.mImgArrow.setVisibility(View.INVISIBLE);
-                holder.mImgEqualizer.setVisibility(View.VISIBLE);
-                if (animation != null) {
-                    animation.stop();
-                    animation.start();
+                if(RadioManager.with(context).isPlaying()) {
+                    holder.mImgArrow.setVisibility(View.INVISIBLE);
+                    holder.mImgEqualizer.setVisibility(View.VISIBLE);
+                    if (animation != null) {
+                        animation.stop();
+                        animation.start();
+                    }
+                } else {
+                    holder.mImgArrow.setVisibility(View.VISIBLE);
+                    holder.mImgEqualizer.setVisibility(View.INVISIBLE);
+                    if (animation != null) {
+                        animation.stop();
+                    }
                 }
             } else {
                 holder.mImgArrow.setVisibility(View.VISIBLE);

@@ -13,4 +13,10 @@
     <item
         android:drawable="@drawable/icon_equalizer_d"
         android:duration="@integer/duration_equalizer_item" />
+    <item
+        android:drawable="@drawable/icon_equalizer_c"
+        android:duration="@integer/duration_equalizer_item" />
+    <item
+        android:drawable="@drawable/icon_equalizer_b"
+        android:duration="@integer/duration_equalizer_item" />
 </animation-list>

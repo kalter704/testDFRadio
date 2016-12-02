@@ -32,4 +32,6 @@ public interface IRadioManager {
 
     void updateNotificationImage(int bigArt);
 
+    void updateNotificationSongName(String songName);
+
 }
