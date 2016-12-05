@@ -199,6 +199,7 @@ public class RadioPlayerService extends Service implements PlayerCallback {
 
         }
 
+        //return START_FLAG_REDELIVERY;
         return START_NOT_STICKY;
     }
 
@@ -229,6 +230,7 @@ public class RadioPlayerService extends Service implements PlayerCallback {
         Log.d("RadioPlayerservice", "onDestroy");
         isDestroy = true;
         stopFromNotification();
+        mListenerList.clear();
         if(mNotificationManager != null) mNotificationManager.cancelAll();
     }
 

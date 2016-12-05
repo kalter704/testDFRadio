@@ -48,6 +48,7 @@ public class RadioManager implements IRadioManager {
 
     /**
      * Private constructor because of Singleton pattern
+     *
      * @param mContext
      */
     private RadioManager(Context mContext) {
@@ -58,6 +59,7 @@ public class RadioManager implements IRadioManager {
 
     /**
      * Singleton
+     *
      * @param mContext
      * @return
      */
@@ -69,14 +71,16 @@ public class RadioManager implements IRadioManager {
 
     /**
      * get current service instance
+     *
      * @return RadioPlayerService
      */
-    public static RadioPlayerService getService(){
+    public static RadioPlayerService getService() {
         return mService;
     }
 
     /**
      * Start Radio Streaming
+     *
      * @param streamURL
      */
     @Override
@@ -94,16 +98,22 @@ public class RadioManager implements IRadioManager {
 
     /**
      * Check if radio is playing
+     *
      * @return
      */
     @Override
     public boolean isPlaying() {
-        log("IsPlaying : " + mService.isPlaying());
-        return mService.isPlaying();
+        if(mService != null) {
+            log("IsPlaying : " + mService.isPlaying());
+            return mService.isPlaying();
+        } else {
+            return false;
+        }
     }
 
     /**
      * Register listener to listen radio service actions
+     *
      * @param mRadioListener
      */
     @Override
@@ -116,6 +126,7 @@ public class RadioManager implements IRadioManager {
 
     /**
      * Unregister listeners
+     *
      * @param mRadioListener
      */
     @Override
@@ -126,6 +137,7 @@ public class RadioManager implements IRadioManager {
 
     /**
      * Set/Unset Logging
+     *
      * @param logging
      */
     @Override
@@ -141,7 +153,10 @@ public class RadioManager implements IRadioManager {
         log("Requested to connect service.");
         Log.d("RadioPlayerservice", "RadioManager connect()");
         Intent intent = new Intent(mContext, RadioPlayerService.class);
+        //intent.setAction("qqwdawfawgasdzf");
+        //mContext.startService(intent);
         mContext.bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        //mContext.bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**
@@ -150,43 +165,50 @@ public class RadioManager implements IRadioManager {
     @Override
     public void disconnect() {
         log("Service Disconnected.");
-        mContext.unbindService(mServiceConnection);
-        //mService = null;
-
+        if (isServiceConnected) {
+            mContext.unbindService(mServiceConnection);
+        }
+        //mContext.stopService(new Intent(mContext, RadioPlayerService.class));
+        mService = null;
+        isServiceConnected = false;
     }
 
     /**
      * Update notification data
+     *
      * @param bigArt
      */
     @Override
     public void updateNotificationImage(int bigArt) {
-        if(mService != null)
+        if (mService != null)
             mService.updateNotificationImage(bigArt);
     }
 
     /**
      * Update notification data
+     *
      * @param smallArt
      */
     @Override
     public void updateNotificationSmallImage(int smallArt) {
-        if(mService != null)
+        if (mService != null)
             mService.updateNotificationSmallImage(smallArt);
     }
 
     /**
      * Update notification data
+     *
      * @param songName
      */
     @Override
     public void updateNotificationSongName(String songName) {
-        if(mService != null)
+        if (mService != null)
             mService.updateNotificationSongName(songName);
     }
 
     /**
      * Update notification data
+     *
      * @param singerName
      * @param songName
      * @param smallArt
@@ -194,12 +216,13 @@ public class RadioManager implements IRadioManager {
      */
     @Override
     public void updateNotification(String singerName, String songName, int smallArt, int bigArt) {
-        if(mService != null)
+        if (mService != null)
             mService.updateNotification(singerName, songName, smallArt, bigArt);
     }
 
     /**
      * Update notification data
+     *
      * @param singerName
      * @param songName
      * @param smallArt
@@ -207,7 +230,7 @@ public class RadioManager implements IRadioManager {
      */
     @Override
     public void updateNotification(String singerName, String songName, int smallArt, Bitmap bigArt) {
-        if(mService != null)
+        if (mService != null)
             mService.updateNotification(singerName, songName, smallArt, bigArt);
     }
 
@@ -243,6 +266,7 @@ public class RadioManager implements IRadioManager {
 
     /**
      * Logger
+     *
      * @param log
      */
     private void log(String log) {

@@ -26,12 +26,12 @@
 
 
                 <RelativeLayout
+                    android:id="@+id/rlMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/rlMenu"
+                    android:background="@drawable/button_background"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/button_background">
+                    android:paddingRight="@dimen/activity_horizontal_margin">
 
                     <ImageView
                         android:id="@+id/ivMenu"
@@ -59,6 +59,8 @@
                         android:textSize="@dimen/text_size_title_toolbar"
                         android:textStyle="normal|bold" />
 
+
+
                     <TextView
                         android:id="@+id/tvSubtitle"
                         android:layout_width="wrap_content"
@@ -69,6 +71,42 @@
                         android:textColor="@color/textColorSecondary"
                         android:textSize="@dimen/text_size_subtitle_toolbar" />
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlUnBound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_background"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:layout_alignParentEnd="true">
+
+                    <ImageView
+                        android:id="@+id/ivUnBound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/ic_menu" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlBound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_background"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@+id/rlUnBound">
+
+                    <ImageView
+                        android:id="@+id/ivMBound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/ic_menu" />
+                </RelativeLayout>
+
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
         <!--

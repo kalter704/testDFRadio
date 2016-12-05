@@ -1,5 +1,6 @@
 package com.example.vasiliy.testdfradio.Activityes;
 
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -7,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
@@ -50,6 +52,21 @@ public class MainActivity extends AppCompatActivity {
         //if(mRadioManager.getService() == null) {
         mRadioManager.connect();
         //}
+
+        (findViewById(R.id.rlBound)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRadioManager.connect();
+            }
+        });
+
+        (findViewById(R.id.rlUnBound)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRadioManager.disconnect();
+            }
+        });
+
     }
 
     private void initializeUI() {
@@ -88,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
         mRadioManager.disconnect();
+        //mRadioManager.stopRadio();
     }
 
 
