@@ -1,5 +1,6 @@
 package com.example.vasiliy.testdfradio.Activityes;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +13,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.vasiliy.testdfradio.Classes.RadioState;
+import com.example.vasiliy.testdfradio.DataClasses.Const;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.Fragments.AllRadioFragment;
 import com.example.vasiliy.testdfradio.Adapters.ViewPagerAdapter;
 import com.example.vasiliy.testdfradio.Fragments.FavoriteRadioFragment;
 import com.example.vasiliy.testdfradio.R;
+import com.example.vasiliy.testdfradio.Services.NotificationService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -78,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent closeIntent = new Intent(this, NotificationService.class);
+        closeIntent.setAction(Const.ACTION.STOPFOREGROUND_ACTION);
+        PendingIntent pcloseIntent = PendingIntent.getService(this, 0, closeIntent, 0);
+        try {
+            pcloseIntent.send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
     }
 
 
