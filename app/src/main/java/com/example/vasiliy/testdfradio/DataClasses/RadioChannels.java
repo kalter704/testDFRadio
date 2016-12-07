@@ -42,7 +42,6 @@ public class RadioChannels {
         add(0);
         add(1);
         add(2);
-        add(3);
         add(4);
         add(5);
         add(6);
@@ -60,8 +59,6 @@ public class RadioChannels {
             "CRAZY DREAM2",
             // 2
             "CRAZY DREAM3",
-            // 3
-            "CRAZY DREAM4",
             // 4
             "Русский хит",
             // 5
@@ -87,8 +84,6 @@ public class RadioChannels {
             "Piter, Russia",
             // 2
             "Samara, Russia",
-            // 3
-            "Rostov, Russia",
             // 4
             "Типа Россия",
             // 5
@@ -120,11 +115,9 @@ public class RadioChannels {
             // 0
             "http://proxy.sidedark-warez.pl/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
             // 1
-            "http://leather-bg.com/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
+            "http://efintrust.com/muro/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
             // 2
             "http://prx.afkcz.eu/prx/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
-            // 3
-            "http://efintrust.com/muro/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
             // 4
             "http://ruhit.imgradio.pro/RusHit48?icy=http",
             // 5

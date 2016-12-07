@@ -71,7 +71,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 debugToast("ivShare");
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_for_shape));
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_for_share));
                 startActivity(Intent.createChooser(intent, getString(R.string.text_description_action)));
                 break;
             case R.id.ivYouTube:

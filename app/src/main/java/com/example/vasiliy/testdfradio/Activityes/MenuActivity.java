@@ -22,14 +22,14 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-
         initializeUI();
     }
 
     private void initializeUI() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
         (findViewById(R.id.rlBack)).setOnClickListener(this);
         (findViewById(R.id.llShare)).setOnClickListener(this);
         (findViewById(R.id.llInfo)).setOnClickListener(this);
@@ -49,7 +49,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 debugToast("llShare");
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_for_shape));
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_for_share));
                 startActivity(Intent.createChooser(intent, getString(R.string.text_description_action)));
                 break;
             case R.id.llInfo:
