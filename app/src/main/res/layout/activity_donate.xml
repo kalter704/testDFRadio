@@ -87,7 +87,8 @@
             android:text="@string/donate_text"
             android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/text_size_menu_items"
-            android:textIsSelectable="true" />
+            android:textIsSelectable="true"/>
+
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

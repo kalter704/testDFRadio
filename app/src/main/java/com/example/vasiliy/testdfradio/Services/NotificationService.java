@@ -101,7 +101,7 @@ public class NotificationService extends Service {
         if (intent.getAction().equals(Const.ACTION.STARTFOREGROUND_ACTION)) {
             isPause = false;
             showNotification(0);
-            Player.start(radioChannels.mLinks[radioChannels.mIds.indexOf(radioChannels.mPlayRadioWithId)]);
+            Player.start(this, radioChannels.mLinks[radioChannels.mIds.indexOf(radioChannels.mPlayRadioWithId)]);
         } else if (intent.getAction().equals(Const.ACTION.PLAY_ACTION)) {
             if (!isPause) {
                 showNotification(2);
@@ -110,7 +110,7 @@ public class NotificationService extends Service {
             } else {
                 showNotification(1);
                 isPause = false;
-                Player.start(radioChannels.mLinks[radioChannels.mIds.indexOf(radioChannels.mPlayRadioWithId)]);
+                Player.start(this, radioChannels.mLinks[radioChannels.mIds.indexOf(radioChannels.mPlayRadioWithId)]);
             }
         } else if (intent.getAction().equals(Const.ACTION.STOPFOREGROUND_ACTION)) {
             Player.stop();

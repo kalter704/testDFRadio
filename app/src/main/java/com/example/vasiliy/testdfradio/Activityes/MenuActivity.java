@@ -1,11 +1,14 @@
 package com.example.vasiliy.testdfradio.Activityes;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vasiliy.testdfradio.Activityes.InfoActivityes.AboutDFActivity;
@@ -29,6 +32,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
+        ((TextView)findViewById(R.id.tvVersion)).setText("Версия: Alpha");
+        /*
+        try {
+            ((TextView)findViewById(R.id.tvVersion)).setText("Версия: " + String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        */
 
         (findViewById(R.id.rlBack)).setOnClickListener(this);
         (findViewById(R.id.llShare)).setOnClickListener(this);

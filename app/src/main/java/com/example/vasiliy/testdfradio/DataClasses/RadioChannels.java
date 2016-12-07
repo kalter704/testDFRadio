@@ -20,10 +20,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class RadioChannels {
 
-    private static RadioChannels ourInstance = new RadioChannels();
+    private static RadioChannels mInstance = new RadioChannels();
 
     public static RadioChannels getInstance() {
-        return ourInstance;
+        return mInstance;
     }
 
     private RadioChannels() {

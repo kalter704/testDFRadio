@@ -22,7 +22,8 @@ public class RadioState {
         PLAY,
         PAUSE,
         STOP,
-        LOADING
+        LOADING,
+        INTERRUPTED
     }
 
     public static Context context = null;
@@ -59,8 +60,10 @@ public class RadioState {
     }
 
     public static void notifRadioStopped() {
-        if (!(state == State.LOADING)) {
-            state = State.STOP;
+        if (state != State.LOADING) {
+            if (state != State.INTERRUPTED) {
+                state = State.STOP;
+            }
             for (OnRadioListener listener : listeners) {
                 listener.onRadioStopped();
             }

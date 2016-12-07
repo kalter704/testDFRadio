@@ -53,16 +53,16 @@
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-    <string name="donate_activity_title">Помощь проекту</string>
+    <string name="donate_activity_title">ПОМОЩЬ ПРОЕКТУ</string>
     <string name="donate_text">
-        Яндекс деньги 1234567890\n
-        Webmoney 1234567890\n
-        Сбербанк онлайн 1234567890
+        Яндекс деньги 1234567890\nСбербанк онлайн 1234567890\nWebmoney 1234567890\n
     </string>
 
-    <string name="contacts_title">Контакты</string>
+    <string name="contacts_title">КОНТАКТЫ</string>
     <string name="contacts_text_item">Алексей Комаров:</string>
     <string name="contacts_text_link"> https://vk.com/id24969366</string>
+
+    <string name="about_activity_title">О DANCE FAMILY</string>
 
     <string name="very_big_text">
         Идейные соображения высшего порядка, а также новая модель организационной деятельности позволяет

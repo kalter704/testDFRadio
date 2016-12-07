@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/menu_info"
+                        android:text="@string/about_activity_title"
                         android:textColor="@color/textColorPrimary"
                         android:textSize="@dimen/text_size_title_toolbar"
                         android:textStyle="normal|bold" />
@@ -88,7 +88,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></LinearLayout>
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:layout_width="match_parent"
