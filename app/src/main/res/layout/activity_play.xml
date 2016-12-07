@@ -46,7 +46,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_toStartOf="@+id/rlShare"
+                    android:layout_toEndOf="@+id/rlBack">
 
                     <TextView
                         android:id="@+id/tvTitle"
@@ -57,7 +59,9 @@
                         android:text="@string/play_title"
                         android:textColor="@color/textColorPrimary"
                         android:textSize="@dimen/text_size_title_toolbar"
-                        android:textStyle="normal|bold" />
+                        android:textStyle="normal|bold"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"/>
 
                     <TextView
                         android:id="@+id/tvSubtitle"
@@ -120,7 +124,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/text_ready_to_play"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/text_size_title_state" />
+                android:textSize="@dimen/text_size_title_state"
+                android:ellipsize="marquee"
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/tvSubstate"
@@ -128,7 +134,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/subtext_ready_to_play"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/text_size_subtitle_state" />
+                android:textSize="@dimen/text_size_subtitle_state"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

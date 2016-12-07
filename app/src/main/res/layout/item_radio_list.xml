@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -8,11 +9,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/recycler_item_background"
+        android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:background="@drawable/recycler_item_background">
+        android:paddingTop="4dp">
 
         <ImageView
             android:id="@+id/imageView5"
@@ -21,16 +22,19 @@
             app:srcCompat="@drawable/cd_logo_new" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="114dp"
+            android:layout_toStartOf="@+id/ivEqualizer"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvRadioName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:text="TextView"
                 android:textColor="@color/textColorSecondPrimary"
                 android:textSize="@dimen/text_size_name_radio"
@@ -40,6 +44,7 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="TextView"
                 android:textColor="@color/textColorSecondSecondary"
                 android:textSize="@dimen/text_size_location_radio" />
@@ -54,7 +59,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="7dp"
             android:background="@drawable/equalizer"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/ivArrow"
@@ -69,8 +74,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/divider1"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginRight="8dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/divider1" />
 </LinearLayout>

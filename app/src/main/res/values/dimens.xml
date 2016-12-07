@@ -25,4 +25,13 @@
     <dimen name="menu_margin_top_text_items">0dp</dimen>
     <dimen name="menu_icons_margin_right">20dp</dimen>
 
+    <!-- Notification -->
+    <dimen name="notification_big_icon_height">64dp</dimen>
+    <dimen name="notification_big_icon_width">64dp</dimen>
+    <dimen name="notification_info_container_padding_left">8dp</dimen>
+    <dimen name="notification_info_container_padding_bottom">4dp</dimen>
+    <dimen name="notification_action_padding">8dp</dimen>
+    <dimen name="notification_action_height">48dp</dimen>
+    <dimen name="notification_action_width">48dp</dimen>
+
 </resources>

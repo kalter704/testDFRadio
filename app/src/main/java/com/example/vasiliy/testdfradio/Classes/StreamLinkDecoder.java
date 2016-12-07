@@ -1,4 +1,4 @@
-package co.mobiwise.library.radio;
+package com.example.vasiliy.testdfradio.Classes;
 
 import android.os.AsyncTask;
 
@@ -9,8 +9,9 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * Created by mertsimsek on 21/10/15.
+ * Created by vasiliy on 06.12.16.
  */
+
 public class StreamLinkDecoder extends AsyncTask<Void, Void, String> {
 
     /**
@@ -67,5 +68,4 @@ public class StreamLinkDecoder extends AsyncTask<Void, Void, String> {
             return "";
         return response.toString();
     }
-
 }

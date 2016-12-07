@@ -45,24 +45,66 @@ public class RadioChannels {
         add(3);
         add(4);
         add(5);
+        add(6);
+        add(7);
+        add(8);
+        add(9);
+        add(10);
+        add(11);
     }};
 
     public String mRadioNames[] = {
+            // 0
             "CRAZY DREAM1",
+            // 1
             "CRAZY DREAM2",
+            // 2
             "CRAZY DREAM3",
+            // 3
             "CRAZY DREAM4",
+            // 4
             "Русский хит",
-            "Dace Wave"
+            // 5
+            "Dace Wave",
+            // 6
+            "SCORES OF MUSIC FROM MOVIES",
+            // 7
+            "Royal Russian",
+            // 8
+            "PAL STATION",
+            // 9
+            "RETRO HIT",
+            // 10
+            "STAR FM Maximum Rock Berlin",
+            // 11
+            "DODO FM"
     };
 
     public String mLocations[] = {
+            // 0
             "Moscow, Russia",
+            // 1
             "Piter, Russia",
+            // 2
             "Samara, Russia",
+            // 3
             "Rostov, Russia",
+            // 4
             "Типа Россия",
-            "ХЗ откуда"
+            // 5
+            "ХЗ откуда",
+            // 6
+            "Melti",
+            // 7
+            "Tambovv, Russia",
+            // 8
+            "Palestina",
+            // 9
+            "Russia",
+            // 10
+            "Berlin",
+            // 11
+            "Russia"
     };
 
     /*
@@ -75,19 +117,37 @@ public class RadioChannels {
     */
 
     public String mLinks[] = {
+            // 0
             "http://proxy.sidedark-warez.pl/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
+            // 1
             "http://leather-bg.com/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
+            // 2
             "http://prx.afkcz.eu/prx/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
+            // 3
             "http://efintrust.com/muro/index.php?q=aHR0cDovL3N0cmVhbWluZy5yYWRpb25vbXkuY29tL1JhZGlvVGVzdC12MTA%3D",
+            // 4
             "http://ruhit.imgradio.pro/RusHit48?icy=http",
-            "http://stream.dancewave.online:8080/dance.mp3?icy=http"
+            // 5
+            "http://stream.dancewave.online:8080/dance.mp3?icy=http",
+            // 6
+            "http://162.213.197.54/;?icy=http",
+            // 7
+            "http://185.39.195.90:8000/rusradio_128?icy=http",
+            // 8
+            "http://46.20.13.51:1230/;?icy=http",
+            // 9
+            "http://relay2.imgradio.pro/RetroHit?icy=http",
+            // 10
+            "http://85.25.209.152:8100/;?icy=http",
+            // 11
+            "http://dodofm.ru:8000/radio"
     };
 
     // Указать индекс (i - 1)
     public List<Integer> mLikes = new ArrayList<>();
 
     public int mPlayRadioWithId = -1;
-    public String mMetaDataPlayingRadio = null;
+    public String mMetaDataNameSongPlayingRadio = null;
 
     public void saveLike(Context context, int n) {
         if(!mLikes.contains(n)) {

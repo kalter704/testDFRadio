@@ -21,16 +21,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vasiliy.testdfradio.Activityes.PlayActivity;
+import com.example.vasiliy.testdfradio.Classes.RadioState;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
+import com.example.vasiliy.testdfradio.Interfaces.OnRadioListener;
 import com.example.vasiliy.testdfradio.R;
 
-import co.mobiwise.library.radio.RadioListener;
-import co.mobiwise.library.radio.RadioManager;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
 
-public class AllRadioFragment extends Fragment implements RadioListener {
+public class AllRadioFragment extends Fragment implements OnRadioListener {
 
     private ContentAdapter adapter;
 
@@ -45,7 +45,7 @@ public class AllRadioFragment extends Fragment implements RadioListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RadioManager.with(getActivity()).registerListener(this);
+        RadioState.addRadioListener(this);
     }
 
     @Override
@@ -72,18 +72,7 @@ public class AllRadioFragment extends Fragment implements RadioListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //RadioManager.with(getActivity()).unregisterListener(this);
-    }
-
-
-    @Override
-    public void onRadioLoading() {
-
-    }
-
-    @Override
-    public void onRadioConnected() {
-
+        RadioState.removeRadioListener(this);
     }
 
     @Override
@@ -91,8 +80,18 @@ public class AllRadioFragment extends Fragment implements RadioListener {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO Do UI works here
-                //RadioChannels.getInstance().mPlayRadioWithId = -1;
+                //TODO Do UI works here.
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onRadioPaused() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here.
                 adapter.notifyDataSetChanged();
             }
         });
@@ -103,26 +102,42 @@ public class AllRadioFragment extends Fragment implements RadioListener {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO Do UI works here
-                //RadioChannels.getInstance().mPlayRadioWithId = -1;
+                //TODO Do UI works here.
                 adapter.notifyDataSetChanged();
             }
         });
     }
 
     @Override
-    public void onMetaDataReceived(String s, String s2) {
+    public void onRadioLoading() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here.
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onRadioMetadata(String s, String s2) {
 
     }
 
     @Override
-    public void onError() {
-
+    public void onRadioError() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here.
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mNameDadio;
+        public TextView mNameRadio;
         public TextView mLocation;
         public ImageView mImgArrow;
         public ImageView mImgEqualizer;
@@ -131,7 +146,7 @@ public class AllRadioFragment extends Fragment implements RadioListener {
 
         public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_radio_list, parent, false));
-            mNameDadio = (TextView) itemView.findViewById(R.id.tvRadioName);
+            mNameRadio = (TextView) itemView.findViewById(R.id.tvRadioName);
             mLocation = (TextView) itemView.findViewById(R.id.tvLocation);
             mImgArrow = (ImageView) itemView.findViewById(R.id.ivArrow);
             mImgEqualizer = (ImageView) itemView.findViewById(R.id.ivEqualizer);
@@ -166,12 +181,12 @@ public class AllRadioFragment extends Fragment implements RadioListener {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.mNameDadio.setText(radioChannels.mRadioNames[position]);
+            holder.mNameRadio.setText(radioChannels.mRadioNames[position]);
             holder.mLocation.setText(radioChannels.mLocations[position]);
             AnimationDrawable animation = null;
             animation = (AnimationDrawable) holder.mImgEqualizer.getBackground();
-            if((radioChannels.mIds.get(position) == radioChannels.mPlayRadioWithId)) {
-                if(RadioManager.with(context).isPlaying()) {
+            if ((radioChannels.mIds.get(position) == radioChannels.mPlayRadioWithId)) {
+                if (RadioState.isPlaying()) {
                     holder.mImgArrow.setVisibility(View.INVISIBLE);
                     holder.mImgEqualizer.setVisibility(View.VISIBLE);
                     if (animation != null) {

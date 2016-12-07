@@ -17,14 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vasiliy.testdfradio.Activityes.PlayActivity;
+import com.example.vasiliy.testdfradio.Classes.RadioState;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
+import com.example.vasiliy.testdfradio.Interfaces.OnRadioListener;
 import com.example.vasiliy.testdfradio.R;
 
-import co.mobiwise.library.radio.RadioListener;
-import co.mobiwise.library.radio.RadioManager;
-
-
-public class FavoriteRadioFragment extends Fragment implements RadioListener {
+public class FavoriteRadioFragment extends Fragment implements OnRadioListener {
 
     private ContentAdapterForFavoriteList adapter;
 
@@ -39,7 +37,7 @@ public class FavoriteRadioFragment extends Fragment implements RadioListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RadioManager.with(getActivity()).registerListener(this);
+        RadioState.addRadioListener(this);
     }
 
     @Override
@@ -66,18 +64,7 @@ public class FavoriteRadioFragment extends Fragment implements RadioListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //RadioManager.with(getActivity()).unregisterListener(this);
-    }
-
-
-    @Override
-    public void onRadioLoading() {
-
-    }
-
-    @Override
-    public void onRadioConnected() {
-
+        RadioState.removeRadioListener(this);
     }
 
     @Override
@@ -85,8 +72,18 @@ public class FavoriteRadioFragment extends Fragment implements RadioListener {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO Do UI works here
-                //RadioChannels.getInstance().mPlayRadioWithId = -1;
+                //TODO Do UI works here.
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onRadioPaused() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here.
                 adapter.notifyDataSetChanged();
             }
         });
@@ -97,21 +94,37 @@ public class FavoriteRadioFragment extends Fragment implements RadioListener {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO Do UI works here
-                //RadioChannels.getInstance().mPlayRadioWithId = -1;
+                //TODO Do UI works here.
                 adapter.notifyDataSetChanged();
             }
         });
     }
 
     @Override
-    public void onMetaDataReceived(String s, String s2) {
+    public void onRadioLoading() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here.
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onRadioMetadata(String s, String s2) {
 
     }
 
     @Override
-    public void onError() {
-
+    public void onRadioError() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO Do UI works here.
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -173,8 +186,8 @@ public class FavoriteRadioFragment extends Fragment implements RadioListener {
             holder.mLocation.setText(radioChannels.mLocations[radioChannels.mLikes.get(position)]);
             AnimationDrawable animation = null;
             animation = (AnimationDrawable) holder.mImgEqualizer.getBackground();
-            if((radioChannels.mIds.get(radioChannels.mLikes.get(position)) == radioChannels.mPlayRadioWithId)) {
-                if(RadioManager.with(context).isPlaying()) {
+            if ((radioChannels.mIds.get(radioChannels.mLikes.get(position)) == radioChannels.mPlayRadioWithId)) {
+                if (RadioState.isPlaying()) {
                     holder.mImgArrow.setVisibility(View.INVISIBLE);
                     holder.mImgEqualizer.setVisibility(View.VISIBLE);
                     if (animation != null) {

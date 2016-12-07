@@ -11,19 +11,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.vasiliy.testdfradio.Classes.RadioState;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.Fragments.AllRadioFragment;
 import com.example.vasiliy.testdfradio.Adapters.ViewPagerAdapter;
 import com.example.vasiliy.testdfradio.Fragments.FavoriteRadioFragment;
 import com.example.vasiliy.testdfradio.R;
 
-import co.mobiwise.library.radio.RadioListener;
-import co.mobiwise.library.radio.RadioManager;
-
 
 public class MainActivity extends AppCompatActivity {
 
-    private RadioManager mRadioManager;
     private ViewPager viewPager;
 
     @Override
@@ -31,10 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //RadioChannels.getInstance().mLikes.clear();
-        //RadioChannels.getInstance().mLikes.add(0);
-        //RadioChannels.getInstance().mLikes.add(2);
-        //RadioChannels.getInstance().mPlayRadioWithId = 0;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,25 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         initializeUI();
 
-        mRadioManager = RadioManager.with(this);
-
-        //if(mRadioManager.getService() == null) {
-        mRadioManager.connect();
-        //}
-
-        (findViewById(R.id.rlBound)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRadioManager.connect();
-            }
-        });
-
-        (findViewById(R.id.rlUnBound)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRadioManager.disconnect();
-            }
-        });
+        RadioState.context = this;
 
     }
 
@@ -103,11 +78,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
-        mRadioManager.disconnect();
-        //mRadioManager.stopRadio();
     }
-
 
 
 }

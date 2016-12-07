@@ -13,15 +13,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vasiliy.testdfradio.Classes.Player;
+import com.example.vasiliy.testdfradio.Classes.RadioState;
+import com.example.vasiliy.testdfradio.DataClasses.Const;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
+import com.example.vasiliy.testdfradio.Interfaces.OnRadioListener;
 import com.example.vasiliy.testdfradio.R;
+import com.example.vasiliy.testdfradio.Services.NotificationService;
 
-import co.mobiwise.library.radio.RadioListener;
-import co.mobiwise.library.radio.RadioManager;
 
-public class PlayActivity extends AppCompatActivity implements View.OnClickListener, RadioListener {
+public class PlayActivity extends AppCompatActivity implements View.OnClickListener, OnRadioListener {
 
-    private final boolean DEBUG_PLAY_ACTIVITY = false; // true = debug on, false = debug off
+    private final boolean DEBUG_PLAY_ACTIVITY = true; // true = debug on, false = debug off
 
     public static final String EXTRA_POSITION = "id_radio";
 
@@ -37,8 +40,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     private int mID;
 
-    RadioManager mRadioManager;
-
     private RadioChannels mRadioChannels;
 
     @Override
@@ -51,18 +52,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         initializeUI();
 
-        mRadioManager = RadioManager.with(this);
-        mRadioManager.registerListener(this);
-        mRadioManager.setLogging(true);
+        RadioState.addRadioListener(this);
         //mRadioManager.updateNotification("singer", "sonr", R.drawable.df_logo, R.drawable.df_logo);
 
         mRadioChannels = RadioChannels.getInstance();
 
         mID = getIntent().getIntExtra(EXTRA_POSITION, 0);
         ((TextView) findViewById(R.id.tvTitle)).setText(mRadioChannels.mRadioNames[mRadioChannels.mIds.indexOf(mID)]);
-
-        tvState = (TextView) findViewById(R.id.tvState);
-        tvSubstate = (TextView) findViewById(R.id.tvSubstate);
 
         if (mRadioChannels.mLikes.contains(mID)) {
             setLike();
@@ -114,21 +110,26 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 RadioChannels.getInstance().saveDislike(this, mID);
                 break;
             case R.id.rlPlay:
-                debugToast("ivPlay");
-                //showProgressBar();
-                mRadioManager.updateNotificationSmallImage(R.drawable.df_logo);
-                mRadioManager.updateNotificationImage(R.drawable.df_logo);
+                //debugToast("ivPlay");
+                showProgressBar();
                 RadioChannels.getInstance().mPlayRadioWithId = mID;
-                mRadioManager.startRadio(mRadioChannels.mLinks[mRadioChannels.mIds.indexOf(mID)]);
+                mRadioChannels.mMetaDataNameSongPlayingRadio = null;
+                startRadio();
                 Log.d("radio", mRadioChannels.mLinks[mRadioChannels.mIds.indexOf(mID)]);
                 break;
             case R.id.rlPause:
                 debugToast("ivPause");
                 showPlay();
+                Player.stop();
                 RadioChannels.getInstance().mPlayRadioWithId = -1;
-                mRadioManager.stopRadio();
                 break;
         }
+    }
+
+    private void startRadio() {
+        Intent serviceIntent = new Intent(PlayActivity.this, NotificationService.class);
+        serviceIntent.setAction(Const.ACTION.STARTFOREGROUND_ACTION);
+        startService(serviceIntent);
     }
 
     private void showPlay() {
@@ -152,8 +153,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mProgressBar.setVisibility(View.INVISIBLE);
         mPause.setVisibility(View.VISIBLE);
         tvState.setText(mRadioChannels.mRadioNames[mRadioChannels.mIds.indexOf(mID)]);
-        if(mRadioChannels.mMetaDataPlayingRadio != null) {
-            tvSubstate.setText(mRadioChannels.mMetaDataPlayingRadio);
+        if(mRadioChannels.mMetaDataNameSongPlayingRadio != null) {
+            tvSubstate.setText(mRadioChannels.mMetaDataNameSongPlayingRadio);
         } else {
             tvSubstate.setText(getString(R.string.subtext_play));
         }
@@ -194,21 +195,24 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mLike = (ImageView) findViewById(R.id.ivLike);
         mLike.setOnClickListener(this);
         mLike.setVisibility(View.INVISIBLE);
+
+        tvState = (TextView) findViewById(R.id.tvState);
+        tvState.setSelected(true);
+        tvSubstate = (TextView) findViewById(R.id.tvSubstate);
+        tvSubstate.setSelected(true);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(mRadioManager.getService() == null) {
-            mRadioManager.connect();
-        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(mRadioChannels.mPlayRadioWithId == mID){
-            if(mRadioManager.isPlaying()) {
+            if(RadioState.isPlaying()) {
                 showPause();
             } else {
                 showPlay();
@@ -226,24 +230,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    public void onRadioLoading() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //TODO Do UI works here.
-                //Toast.makeText(getApplicationContext(), "onRadioLoading", Toast.LENGTH_SHORT).show();
-                showProgressBar();
-            }
-        });
-
-    }
-
-    @Override
-    public void onRadioConnected() {
-        //mRadioManager.updateNotificationImage(BitmapFactory.decodeResource(getResources(), R.drawable.df_logo));
+        RadioState.removeRadioListener(this);
     }
 
     @Override
@@ -251,10 +238,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO Do UI works here.
-                //Toast.makeText(getApplicationContext(), "onRadioStarted", Toast.LENGTH_SHORT).show();
                 showPause();
-                RadioChannels.getInstance().mPlayRadioWithId = mID;
+                debugToast("onRadioStarted");
+            }
+        });
+    }
+
+    @Override
+    public void onRadioPaused() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showPlay();
+                debugToast("onRadioPaused");
             }
         });
     }
@@ -264,50 +260,57 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO Do UI works here
-                //Toast.makeText(getApplicationContext(), "onRadioStopped", Toast.LENGTH_SHORT).show();
-                //showPlay();
-                //RadioChannels.getInstance().mPlayRadioWithId = -1;
-                mRadioChannels.mMetaDataPlayingRadio = null;
+                showPlay();
+                debugToast("onRadioStopped");
             }
         });
     }
 
     @Override
-    public void onMetaDataReceived(String s, String s2) {
-        final String ss = s;
-        final String ss2 = s2;
+    public void onRadioLoading() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showProgressBar();
+                debugToast("onRadioLoading");
+            }
+        });
+    }
+
+    @Override
+    public void onRadioMetadata(final String s, final String s2) {
+        //final String ss = s;
+        //final String ss2 = s2;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //TODO Do UI works here
-                Log.d("MetaDataDebug", "s = " + ss);
-                Log.d("MetaDataDebug", "s2 = " + ss2);
+                Log.d("MetaDataDebug", "s = " + s);
+                Log.d("MetaDataDebug", "s2 = " + s2);
                 Log.d("MetaDataDebug", "\n");
-                if("StreamTitle".equals(ss)) {
-                    tvSubstate.setText(ss2);
-                    mRadioChannels.mMetaDataPlayingRadio = ss2;
+                if("StreamTitle".equals(s)) {
+                    tvSubstate.setText(s2);
+                    //mRadioChannels.mMetaDataNameSongPlayingRadio = s2;
                 }
             }
         });
     }
 
     @Override
-    public void onError() {
+    public void onRadioError() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO Do UI works here
-                //Toast.makeText(getApplicationContext(), "onError", Toast.LENGTH_SHORT).show();
                 showPlay();
-                RadioChannels.getInstance().mPlayRadioWithId = -1;
+                mRadioChannels.mPlayRadioWithId = -1;
+                debugToast("onRadioError");
             }
         });
     }
 
     private void debugToast(String str) {
         if (DEBUG_PLAY_ACTIVITY) {
-            Toast.makeText(PlayActivity.this, str, Toast.LENGTH_SHORT).show();
+            Log.d("PlayActivity", str);
         }
     }
 
