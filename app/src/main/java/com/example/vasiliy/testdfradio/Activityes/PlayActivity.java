@@ -1,5 +1,6 @@
 package com.example.vasiliy.testdfradio.Activityes;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,24 +48,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mID = getIntent().getIntExtra(EXTRA_POSITION, 0);
+
+        mRadioChannels = RadioChannels.getInstance();
 
         initializeUI();
 
         RadioState.addRadioListener(this);
         //mRadioManager.updateNotification("singer", "sonr", R.drawable.df_logo, R.drawable.df_logo);
 
-        mRadioChannels = RadioChannels.getInstance();
 
-        mID = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        ((TextView) findViewById(R.id.tvTitle)).setText(mRadioChannels.mRadioNames[mRadioChannels.mIds.indexOf(mID)]);
-
-        if (mRadioChannels.mLikes.contains(mID)) {
-            setLike();
-        } else {
-            setUnLike();
-        }
     }
 
     @Override
@@ -120,8 +113,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.rlPause:
                 debugToast("ivPause");
                 showPlay();
-                Player.stop();
-                RadioChannels.getInstance().mPlayRadioWithId = -1;
+                //Player.stop();
+
+                Intent pauseIntent = new Intent(this, NotificationService.class);
+                pauseIntent.setAction(Const.ACTION.PLAY_ACTION);
+                PendingIntent ppauseIntent = PendingIntent.getService(this, 0, pauseIntent, 0);
+                try {
+                    ppauseIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+
+                //RadioChannels.getInstance().mPlayRadioWithId = -1;
                 break;
         }
     }
@@ -153,7 +156,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         mProgressBar.setVisibility(View.INVISIBLE);
         mPause.setVisibility(View.VISIBLE);
         tvState.setText(mRadioChannels.mRadioNames[mRadioChannels.mIds.indexOf(mID)]);
-        if(mRadioChannels.mMetaDataNameSongPlayingRadio != null) {
+        if (mRadioChannels.mMetaDataNameSongPlayingRadio != null) {
             tvSubstate.setText(mRadioChannels.mMetaDataNameSongPlayingRadio);
         } else {
             tvSubstate.setText(getString(R.string.subtext_play));
@@ -171,6 +174,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initializeUI() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         mPlay = (RelativeLayout) findViewById(R.id.rlPlay);
         mPlay.setVisibility(View.VISIBLE);
         mPlay.setOnClickListener(this);
@@ -200,6 +206,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         tvState.setSelected(true);
         tvSubstate = (TextView) findViewById(R.id.tvSubstate);
         tvSubstate.setSelected(true);
+
+        ((TextView) findViewById(R.id.tvTitle)).setText(mRadioChannels.mRadioNames[mRadioChannels.mIds.indexOf(mID)]);
+
+        if (mRadioChannels.mLikes.contains(mID)) {
+            setLike();
+        } else {
+            setUnLike();
+        }
     }
 
     @Override
@@ -211,8 +225,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if(mRadioChannels.mPlayRadioWithId == mID){
-            if(RadioState.isPlaying()) {
+        if (mRadioChannels.mPlayRadioWithId == mID) {
+            if (RadioState.isPlaying()) {
                 showPause();
             } else {
                 showPlay();
@@ -288,7 +302,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("MetaDataDebug", "s = " + s);
                 Log.d("MetaDataDebug", "s2 = " + s2);
                 Log.d("MetaDataDebug", "\n");
-                if("StreamTitle".equals(s)) {
+                if ("StreamTitle".equals(s)) {
                     tvSubstate.setText(s2);
                     //mRadioChannels.mMetaDataNameSongPlayingRadio = s2;
                 }

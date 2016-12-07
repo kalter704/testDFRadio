@@ -38,10 +38,14 @@ public class NotificationService extends Service {
 
         // надод попроваить!!!!!!!!11
         Intent notificationIntent = new Intent(this, PlayActivity.class);
-        notificationIntent.setAction(Const.ACTION.MAIN_ACTION);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //notificationIntent.setAction(Const.ACTION.MAIN_ACTION);
+        notificationIntent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mPlayRadioWithId);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //views.setOnClickPendingIntent(R.id.notification_base, pendingIntent);
 
         Intent playIntent = new Intent(this, NotificationService.class);
         playIntent.setAction(Const.ACTION.PLAY_ACTION);
@@ -58,15 +62,15 @@ public class NotificationService extends Service {
         views.setTextViewText(R.id.notification_line_one, radioChannels.mRadioNames[radioChannels.mIds.indexOf(radioChannels.mPlayRadioWithId)]);
 
         if (pos == 0) {
-            views.setImageViewResource(R.id.notification_play, R.drawable.btn_playback_pause);
+            views.setImageViewResource(R.id.notification_play, R.drawable.ic_pause);
             views.setTextViewText(R.id.notification_line_two, radioChannels.mMetaDataNameSongPlayingRadio != null ? radioChannels.mMetaDataNameSongPlayingRadio : getString(R.string.subtext_play));
         }
         if (pos == 1) {
-            views.setImageViewResource(R.id.notification_play, R.drawable.btn_playback_pause);
+            views.setImageViewResource(R.id.notification_play, R.drawable.ic_pause);
             views.setTextViewText(R.id.notification_line_two, radioChannels.mMetaDataNameSongPlayingRadio != null ? radioChannels.mMetaDataNameSongPlayingRadio : getString(R.string.subtext_play));
         }
         if (pos == 2) {
-            views.setImageViewResource(R.id.notification_play, R.drawable.btn_playback_play);
+            views.setImageViewResource(R.id.notification_play, R.drawable.ic_play_arrow);
             views.setTextViewText(R.id.notification_line_two, getString(R.string.subtext_ready_to_play));
         }
         notification = new Notification.Builder(this).build();

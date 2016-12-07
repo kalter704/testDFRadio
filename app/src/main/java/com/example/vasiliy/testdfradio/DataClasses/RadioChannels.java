@@ -146,7 +146,7 @@ public class RadioChannels {
     // Указать индекс (i - 1)
     public List<Integer> mLikes = new ArrayList<>();
 
-    public int mPlayRadioWithId = -1;
+    public static int mPlayRadioWithId = -1;
     public String mMetaDataNameSongPlayingRadio = null;
 
     public void saveLike(Context context, int n) {

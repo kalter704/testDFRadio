@@ -42,11 +42,11 @@
     <ImageView
         android:id="@+id/notification_play"
         style="@style/NotificationAction.Play"
-        android:src="@drawable/btn_playback_pause"/>
+        android:src="@drawable/ic_pause"/>
 
     <ImageView
         android:id="@+id/notification_collapse"
         style="@style/NotificationAction.Collapse"
-        android:src="@drawable/btn_notification_collapse"/>
+        android:src="@drawable/ic_close"/>
 
 </LinearLayout>

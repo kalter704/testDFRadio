@@ -85,9 +85,9 @@ public class RadioState {
         if("StreamTitle".equals(s)) {
             RadioChannels.getInstance().mMetaDataNameSongPlayingRadio = s2;
 
-            Intent closeIntent = new Intent(context, NotificationService.class);
-            closeIntent.setAction(Const.ACTION.UPDATE_NOTIFICATION_ACTION);
-            PendingIntent pupdateIntent = PendingIntent.getService(context, 0, closeIntent, 0);
+            Intent updateIntent = new Intent(context, NotificationService.class);
+            updateIntent.setAction(Const.ACTION.UPDATE_NOTIFICATION_ACTION);
+            PendingIntent pupdateIntent = PendingIntent.getService(context, 0, updateIntent, 0);
             try {
                 pupdateIntent.send();
             } catch (PendingIntent.CanceledException e) {
