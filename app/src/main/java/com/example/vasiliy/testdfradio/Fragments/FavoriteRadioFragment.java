@@ -147,7 +147,7 @@ public class FavoriteRadioFragment extends Fragment implements OnRadioListener {
                 public void onClick(View view) {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, PlayActivity.class);
-                    intent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mIds.get(radioChannels.mLikes.get(getAdapterPosition())));
+                    intent.putExtra(PlayActivity.EXTRA_ID, radioChannels.mLikes.get(getAdapterPosition()));
                     context.startActivity(intent);
                 }
             });
@@ -182,11 +182,13 @@ public class FavoriteRadioFragment extends Fragment implements OnRadioListener {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.mNameDadio.setText(radioChannels.mRadioNames[radioChannels.mLikes.get(position)]);
-            holder.mLocation.setText(radioChannels.mLocations[radioChannels.mLikes.get(position)]);
+            int r = radioChannels.mLikes.get(position);
+            int i = radioChannels.mIds.indexOf(r);
+            holder.mNameDadio.setText(radioChannels.mRadioNames[i]);
+            holder.mLocation.setText(radioChannels.mLocations[i]);
             AnimationDrawable animation = null;
             animation = (AnimationDrawable) holder.mImgEqualizer.getBackground();
-            if ((radioChannels.mIds.get(radioChannels.mLikes.get(position)) == radioChannels.mPlayRadioWithId)) {
+            if ((radioChannels.mIds.get(i) == radioChannels.mPlayRadioWithId)) {
                 if (RadioState.isPlaying()) {
                     holder.mImgArrow.setVisibility(View.INVISIBLE);
                     holder.mImgEqualizer.setVisibility(View.VISIBLE);
@@ -208,6 +210,7 @@ public class FavoriteRadioFragment extends Fragment implements OnRadioListener {
                     animation.stop();
                 }
             }
+
         }
 
         @Override

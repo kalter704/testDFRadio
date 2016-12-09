@@ -221,7 +221,7 @@ public class RadioChannels {
         mLikes.clear();
         for(int i = 0; i < mIds.size(); i++) {
             if(sPref.getString(String.valueOf(mIds.get(i)), "").equals("like")) {
-                mLikes.add(i);
+                mLikes.add(mIds.get(i));
             }
         }
     }

@@ -81,14 +81,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Intent closeIntent = new Intent(this, NotificationService.class);
-        closeIntent.setAction(Const.ACTION.STOPFOREGROUND_ACTION);
-        closeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pcloseIntent = PendingIntent.getService(this, 0, closeIntent, 0);
-        try {
-            pcloseIntent.send();
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
+        if (RadioState.state != RadioState.State.STOP) {
+            Intent closeIntent = new Intent(this, NotificationService.class);
+            closeIntent.setAction(Const.ACTION.STOPFOREGROUND_ACTION);
+            closeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pcloseIntent = PendingIntent.getService(this, 0, closeIntent, 0);
+            try {
+                pcloseIntent.send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -155,7 +155,7 @@ public class AllRadioFragment extends Fragment implements OnRadioListener {
                 public void onClick(View view) {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, PlayActivity.class);
-                    intent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mIds.get(getAdapterPosition()));
+                    intent.putExtra(PlayActivity.EXTRA_ID, radioChannels.mIds.get(getAdapterPosition()));
                     context.startActivity(intent);
                 }
             });

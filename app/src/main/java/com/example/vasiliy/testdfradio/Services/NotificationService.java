@@ -39,7 +39,7 @@ public class NotificationService extends Service {
         // надод попроваить!!!!!!!!11
         Intent notificationIntent = new Intent(this, PlayActivity.class);
         //notificationIntent.setAction(Const.ACTION.MAIN_ACTION);
-        notificationIntent.putExtra(PlayActivity.EXTRA_POSITION, radioChannels.mPlayRadioWithId);
+        notificationIntent.putExtra(PlayActivity.EXTRA_ID, radioChannels.mPlayRadioWithId);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 

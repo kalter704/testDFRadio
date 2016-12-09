@@ -27,7 +27,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     private final boolean DEBUG_PLAY_ACTIVITY = true; // true = debug on, false = debug off
 
-    public static final String EXTRA_POSITION = "id_radio";
+    public static final String EXTRA_ID = "id_radio";
 
     private RelativeLayout mPlay;
     private RelativeLayout mPause;
@@ -48,7 +48,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        mID = getIntent().getIntExtra(EXTRA_POSITION, 0);
+        mID = getIntent().getIntExtra(EXTRA_ID, 0);
 
         mRadioChannels = RadioChannels.getInstance();
 
