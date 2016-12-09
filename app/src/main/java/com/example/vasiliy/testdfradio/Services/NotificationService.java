@@ -101,18 +101,22 @@ public class NotificationService extends Service {
         if (intent.getAction().equals(Const.ACTION.STARTFOREGROUND_ACTION)) {
             isPause = false;
             showNotification(0);
+            RadioState.state = RadioState.State.PLAY;
             Player.start(this, radioChannels.mLinks[radioChannels.mIds.indexOf(radioChannels.mPlayRadioWithId)]);
         } else if (intent.getAction().equals(Const.ACTION.PLAY_ACTION)) {
             if (!isPause) {
                 showNotification(2);
+                RadioState.state = RadioState.State.STOP;
                 Player.stop();
                 isPause = true;
             } else {
                 showNotification(1);
                 isPause = false;
+                RadioState.state = RadioState.State.PLAY;
                 Player.start(this, radioChannels.mLinks[radioChannels.mIds.indexOf(radioChannels.mPlayRadioWithId)]);
             }
         } else if (intent.getAction().equals(Const.ACTION.STOPFOREGROUND_ACTION)) {
+            RadioState.state = RadioState.State.STOP;
             Player.stop();
             stopForeground(true);
             stopSelf();

@@ -69,4 +69,8 @@
     <style name="NotificationAction.Collapse" parent="@style/NotificationAction">
     </style>
 
+    <style name="circular_progress" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">#ffffff</item>
+    </style>
+
 </resources>

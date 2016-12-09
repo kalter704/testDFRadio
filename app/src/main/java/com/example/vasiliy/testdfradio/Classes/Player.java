@@ -29,19 +29,26 @@ public class Player implements PlayerCallback {
 
     private Context context = null;
 
+    private static boolean mIsReady = true;
+    //private static boolean mIsStop = true;
+
+    private static String mUrl = null;
+
     private Player() {}
 
     public static void start(Context context, String URL) {
+        instance.mUrl = URL;
         instance.context = context;
-        if (RadioState.isPlaying()) {
-            instance.getPlayer().stop();
-        }
-        //RadioState.notifRadioLoading();
         RadioState.state = RadioState.State.LOADING;
-        if (instance.checkSuffix(URL)) {
-            instance.decodeStremLink(URL);
+        if (!mIsReady) {
+            //mIsReady = false;
+            instance.getPlayer().stop();
         } else {
-            instance.getPlayer().playAsync(URL);
+            if (instance.checkSuffix(URL)) {
+                instance.decodeStremLink(URL);
+            } else {
+                instance.getPlayer().playAsync(URL);
+            }
         }
     }
 
@@ -70,12 +77,19 @@ public class Player implements PlayerCallback {
 
     @Override
     public void playerStarted() {
+        RadioState.state = RadioState.State.PLAY;
+        mIsReady = false;
         RadioState.notifRadioStarted();
     }
 
     @Override
     public void playerStopped(int i) {
+        //mIsStop = true;
+        mIsReady = true;
         RadioState.notifRadioStopped();
+        if ((RadioState.state != RadioState.State.STOP) && ((RadioState.state != RadioState.State.INTERRUPTED) || (RadioState.state == RadioState.State.LOADING))) {
+            start(context, mUrl);
+        }
     }
 
     @Override
@@ -87,6 +101,7 @@ public class Player implements PlayerCallback {
     public void playerException(Throwable throwable) {
         RadioState.notifRadioError();
         throwable.printStackTrace();
+        RadioState.state = RadioState.State.STOP;
     }
 
     @Override

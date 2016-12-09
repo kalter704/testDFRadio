@@ -18,7 +18,7 @@ import java.util.List;
 
 public class RadioState {
 
-    enum State {
+    public enum State {
         PLAY,
         PAUSE,
         STOP,
@@ -46,14 +46,14 @@ public class RadioState {
 
 
     public static void notifRadioStarted() {
-        state = State.PLAY;
+        //state = State.PLAY;
         for (OnRadioListener listener : listeners) {
             listener.onRadioStarted();
         }
     }
 
     public static void notifRadioPaused() {
-        state = State.PAUSE;
+        //state = State.PAUSE;
         for (OnRadioListener listener : listeners) {
             listener.onRadioPaused();
         }
@@ -61,9 +61,6 @@ public class RadioState {
 
     public static void notifRadioStopped() {
         if (state != State.LOADING) {
-            if (state != State.INTERRUPTED) {
-                state = State.STOP;
-            }
             for (OnRadioListener listener : listeners) {
                 listener.onRadioStopped();
             }
@@ -71,14 +68,14 @@ public class RadioState {
     }
 
     public static void notifRadioLoading() {
-        state = State.PLAY;
+        //state = State.PLAY;
         for (OnRadioListener listener : listeners) {
             listener.onRadioLoading();
         }
     }
 
     public static void notifRadioError() {
-        state = State.STOP;
+        //state = State.STOP;
         for (OnRadioListener listener : listeners) {
             listener.onRadioError();
         }

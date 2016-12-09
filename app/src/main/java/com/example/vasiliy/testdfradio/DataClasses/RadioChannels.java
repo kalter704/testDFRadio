@@ -50,6 +50,14 @@ public class RadioChannels {
         add(9);
         add(10);
         add(11);
+
+        add(12);
+        add(13);
+        add(14);
+        add(15);
+        add(16);
+        add(17);
+        add(18);
     }};
 
     public String mRadioNames[] = {
@@ -74,7 +82,22 @@ public class RadioChannels {
             // 10
             "STAR FM Maximum Rock Berlin",
             // 11
-            "DODO FM"
+            "DODO FM",
+
+            // 12
+            "Радио Like FM",
+            // 13
+            "Радио Ретро FM",
+            // 14
+            "Радио Jazz",
+            // 15
+            "Радио Rock FM",
+            // 16
+            "Радио классической музыки \"Орфей\"",
+            // 17
+            "Радио Монте-Карло",
+            // 18
+            "Радио Книга"
     };
 
     public String mLocations[] = {
@@ -99,6 +122,21 @@ public class RadioChannels {
             // 10
             "Berlin",
             // 11
+            "Russia",
+
+            // 12
+            "Russia",
+            // 13
+            "Russia",
+            // 14
+            "Russia",
+            // 15
+            "Russia",
+            // 16
+            "Russia",
+            // 17
+            "Russia",
+            // 18
             "Russia"
     };
 
@@ -133,7 +171,22 @@ public class RadioChannels {
             // 10
             "http://85.25.209.152:8100/;?icy=http",
             // 11
-            "http://dodofm.ru:8000/radio"
+            "http://dodofm.ru:8000/radio",
+
+            // 12
+            "http://193.232.148.42:8000/v12_1",
+            // 13
+            "http://retroserver.streamr.ru:8043/retro128",
+            // 14
+            "http://nashe3.hostingradio.ru/jazz-128.mp3",
+            // 15
+            "http://nashe3.hostingradio.ru/rock-128.mp3",
+            // 16
+            "http://icecast.orpheus.cdnvideo.ru:8000/orpheus_128",
+            // 17
+            "http://icecast.radiomontecarlo.cdnvideo.ru/mc.mp3",
+            //18
+            "http://bookradio.hostingradio.ru:8069/fm"
     };
 
     // Указать индекс (i - 1)

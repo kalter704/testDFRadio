@@ -316,7 +316,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 showPlay();
-                mRadioChannels.mPlayRadioWithId = -1;
+                //mRadioChannels.mPlayRadioWithId = -1;
                 debugToast("onRadioError");
             }
         });
