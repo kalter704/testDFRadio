@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -95,11 +96,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ivUnLike:
                 debugToast("ivUnLike");
                 setLike();
+                pushSnack(getString(R.string.snack_like));
                 RadioChannels.getInstance().saveLike(this, mID);
                 break;
             case R.id.ivLike:
                 debugToast("ivLike");
                 setUnLike();
+                pushSnack(getString(R.string.snack_unlike));
                 RadioChannels.getInstance().saveDislike(this, mID);
                 break;
             case R.id.rlPlay:
@@ -171,6 +174,17 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     private void setUnLike() {
         mLike.setVisibility(View.INVISIBLE);
         mUnLike.setVisibility(View.VISIBLE);
+    }
+
+    private void pushSnack(String str) {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.playCoordLayout),
+                str,
+                Snackbar.LENGTH_SHORT);
+        View snackView = snackbar.getView();
+        snackView.setBackgroundColor(getResources().getColor(R.color.snackLikeColor));
+        ((TextView) snackView.findViewById(android.support.design.R.id.snackbar_text)).setTextColor(getResources().getColor(R.color.textColorSecondPrimary));
+        snackbar.show();
     }
 
     private void initializeUI() {

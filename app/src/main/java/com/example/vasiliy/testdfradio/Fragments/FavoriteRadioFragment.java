@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -127,7 +128,7 @@ public class FavoriteRadioFragment extends Fragment implements OnRadioListener {
         });
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mNameDadio;
         public TextView mLocation;
@@ -151,14 +152,20 @@ public class FavoriteRadioFragment extends Fragment implements OnRadioListener {
                         intent.putExtra(PlayActivity.EXTRA_ID, radioChannels.mLikes.get(getAdapterPosition()));
                         context.startActivity(intent);
                     } else {
-                        Toast.makeText(view.getContext(), view.getContext().getString(R.string.error_network), Toast.LENGTH_LONG).show();
+                        Snackbar snackbar = Snackbar.make(
+                                getActivity().findViewById(R.id.mainCoordLayout),
+                                context.getString(R.string.error_network),
+                                Snackbar.LENGTH_SHORT);
+                        View snackView = snackbar.getView();
+                        snackView.setBackgroundColor(getActivity().getResources().getColor(R.color.snackErrorNetworkColor));
+                        snackbar.show();
                     }
                 }
             });
         }
     }
 
-    public static class ContentAdapterForFavoriteList extends RecyclerView.Adapter<ViewHolder> {
+    public class ContentAdapterForFavoriteList extends RecyclerView.Adapter<ViewHolder> {
 
         private RadioChannels radioChannels;
         Context context;

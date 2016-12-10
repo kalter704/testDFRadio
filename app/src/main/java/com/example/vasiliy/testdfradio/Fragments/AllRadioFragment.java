@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -135,7 +138,8 @@ public class AllRadioFragment extends Fragment implements OnRadioListener {
         });
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    //static ?
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mNameRadio;
         public TextView mLocation;
@@ -159,16 +163,24 @@ public class AllRadioFragment extends Fragment implements OnRadioListener {
                         intent.putExtra(PlayActivity.EXTRA_ID, radioChannels.mIds.get(getAdapterPosition()));
                         context.startActivity(intent);
                     } else {
-                        Toast.makeText(view.getContext(), view.getContext().getString(R.string.error_network), Toast.LENGTH_LONG).show();
+                        Snackbar snackbar = Snackbar.make(
+                                getActivity().findViewById(R.id.mainCoordLayout),
+                                context.getString(R.string.error_network),
+                                Snackbar.LENGTH_SHORT);
+                        View snackView = snackbar.getView();
+                        snackView.setBackgroundColor(getActivity().getResources().getColor(R.color.snackErrorNetworkColor));
+                        snackbar.show();
                     }
                 }
             });
         }
     }
 
-    public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
+    //static ?
+    public class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-        private static int LENGTH = 0;
+        //static ?
+        private int LENGTH = 0;
         RadioChannels radioChannels;
         Context context;
 

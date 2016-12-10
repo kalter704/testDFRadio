@@ -46,6 +46,9 @@
     <string name="link_youtube">https://www.youtube.com/</string>
     <string name="link_instagram">https://www.instagram.com/</string>
 
+    <string name="snack_like">Радио добавлено в любимое</string>
+    <string name="snack_unlike">Радио удалено из любимое</string>
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     <string name="file_name">likes_file</string>
