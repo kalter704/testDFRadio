@@ -3,6 +3,8 @@ package com.example.vasiliy.testdfradio.Classes;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.example.vasiliy.testdfradio.DataClasses.Const;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
@@ -82,7 +84,7 @@ public class RadioState {
     }
 
     public static void notifRadioMetadata(String s, String s2) {
-        if("StreamTitle".equals(s)) {
+        if ("StreamTitle".equals(s)) {
             RadioChannels.getInstance().mMetaDataNameSongPlayingRadio = s2;
 
             Intent updateIntent = new Intent(context, NotificationService.class);
@@ -98,6 +100,23 @@ public class RadioState {
                 listener.onRadioMetadata(s, s2);
             }
         }
+    }
+
+    public static boolean hasConnectionToNetwork() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        wifiInfo = cm.getActiveNetworkInfo();
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        return false;
     }
 
 }

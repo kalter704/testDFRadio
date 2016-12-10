@@ -145,10 +145,14 @@ public class FavoriteRadioFragment extends Fragment implements OnRadioListener {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, PlayActivity.class);
-                    intent.putExtra(PlayActivity.EXTRA_ID, radioChannels.mLikes.get(getAdapterPosition()));
-                    context.startActivity(intent);
+                    if (RadioState.hasConnectionToNetwork()) {
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, PlayActivity.class);
+                        intent.putExtra(PlayActivity.EXTRA_ID, radioChannels.mLikes.get(getAdapterPosition()));
+                        context.startActivity(intent);
+                    } else {
+                        Toast.makeText(view.getContext(), view.getContext().getString(R.string.error_network), Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }

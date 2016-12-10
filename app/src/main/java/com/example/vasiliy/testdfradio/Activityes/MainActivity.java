@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         initializeUI();
 
-        RadioState.context = this;
-
     }
 
     private void initializeUI() {
