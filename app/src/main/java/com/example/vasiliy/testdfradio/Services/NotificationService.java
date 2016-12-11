@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.example.vasiliy.testdfradio.Activityes.PlayActivity;
 import com.example.vasiliy.testdfradio.Classes.Player;
@@ -49,11 +50,11 @@ public class NotificationService extends Service {
 
         Intent playIntent = new Intent(this, NotificationService.class);
         playIntent.setAction(Const.ACTION.PLAY_ACTION);
-        PendingIntent pplayIntent = PendingIntent.getService(this, 0, playIntent, 0);
+        PendingIntent pplayIntent = PendingIntent.getService(this, 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent closeIntent = new Intent(this, NotificationService.class);
         closeIntent.setAction(Const.ACTION.STOPFOREGROUND_ACTION);
-        PendingIntent pcloseIntent = PendingIntent.getService(this, 0, closeIntent, 0);
+        PendingIntent pcloseIntent = PendingIntent.getService(this, 0, closeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         views.setOnClickPendingIntent(R.id.notification_play, pplayIntent);
 

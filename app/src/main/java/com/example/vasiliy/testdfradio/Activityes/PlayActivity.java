@@ -3,11 +3,13 @@ package com.example.vasiliy.testdfradio.Activityes;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -22,6 +24,8 @@ import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.Interfaces.OnRadioListener;
 import com.example.vasiliy.testdfradio.R;
 import com.example.vasiliy.testdfradio.Services.NotificationService;
+
+import org.w3c.dom.Text;
 
 
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener, OnRadioListener {
@@ -111,6 +115,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 RadioChannels.getInstance().mPlayRadioWithId = mID;
                 mRadioChannels.mMetaDataNameSongPlayingRadio = null;
                 startRadio();
+
+                /*
+                Intent playIntent = new Intent(this, NotificationService.class);
+                playIntent.setAction(Const.ACTION.PLAY_ACTION);
+                PendingIntent pplayIntent = PendingIntent.getService(this, 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                try {
+                    pplayIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+                */
+
                 Log.d("radio", mRadioChannels.mLinks[mRadioChannels.mIds.indexOf(mID)]);
                 break;
             case R.id.rlPause:
@@ -120,7 +136,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
                 Intent pauseIntent = new Intent(this, NotificationService.class);
                 pauseIntent.setAction(Const.ACTION.PLAY_ACTION);
-                PendingIntent ppauseIntent = PendingIntent.getService(this, 0, pauseIntent, 0);
+                PendingIntent ppauseIntent = PendingIntent.getService(this, 0, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 try {
                     ppauseIntent.send();
                 } catch (PendingIntent.CanceledException e) {
@@ -183,7 +199,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 Snackbar.LENGTH_SHORT);
         View snackView = snackbar.getView();
         snackView.setBackgroundColor(getResources().getColor(R.color.snackLikeColor));
-        ((TextView) snackView.findViewById(android.support.design.R.id.snackbar_text)).setTextColor(getResources().getColor(R.color.textColorSecondPrimary));
+        TextView snackTV = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+        snackTV.setTextColor(getResources().getColor(R.color.textColorSecondPrimary));
+        snackTV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         snackbar.show();
     }
 

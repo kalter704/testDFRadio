@@ -193,8 +193,7 @@ public class FavoriteRadioFragment extends Fragment implements OnRadioListener {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            int r = radioChannels.mLikes.get(position);
-            int i = radioChannels.mIds.indexOf(r);
+            int i = radioChannels.mIds.indexOf(radioChannels.mLikes.get(position));
             holder.mNameDadio.setText(radioChannels.mRadioNames[i]);
             holder.mLocation.setText(radioChannels.mLocations[i]);
             AnimationDrawable animation = null;
