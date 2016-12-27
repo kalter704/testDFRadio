@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         initializeUI();
 
-        int r = 3;
-
     }
 
     private void initializeUI() {
