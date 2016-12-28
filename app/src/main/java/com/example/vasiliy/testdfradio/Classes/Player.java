@@ -3,6 +3,7 @@ package com.example.vasiliy.testdfradio.Classes;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.util.Log;
 
 import com.example.vasiliy.testdfradio.DataClasses.Const;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
+import com.example.vasiliy.testdfradio.Receivers.NoisyAudioStreamReceiver;
 import com.example.vasiliy.testdfradio.Services.NotificationService;
 import com.spoledge.aacdecoder.MultiPlayer;
 import com.spoledge.aacdecoder.PlayerCallback;
@@ -33,6 +35,9 @@ public class Player implements PlayerCallback {
     private MultiPlayer mRadioPlayer;
 
     private AudioManager mAudioManager;
+
+    private NoisyAudioStreamReceiver mNoisyAudioStreamReceiver = new NoisyAudioStreamReceiver();
+    private IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
 
     private static Player instance = new Player();
 
@@ -64,8 +69,9 @@ public class Player implements PlayerCallback {
                         AudioManager.AUDIOFOCUS_GAIN);
 
                 if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                    // начинаем воспроизведение
                     instance.getPlayer().playAsync(URL);
+                } else {
+                    RadioState.state = RadioState.State.STOP;
                 }
             }
         }
@@ -96,6 +102,7 @@ public class Player implements PlayerCallback {
 
     @Override
     public void playerStarted() {
+        context.registerReceiver(mNoisyAudioStreamReceiver, intentFilter);
         RadioState.state = RadioState.State.PLAY;
         mIsReady = false;
         RadioState.notifRadioStarted();
@@ -104,6 +111,7 @@ public class Player implements PlayerCallback {
     @Override
     public void playerStopped(int i) {
         //mIsStop = true;
+        context.unregisterReceiver(mNoisyAudioStreamReceiver);
         mIsReady = true;
         RadioState.notifRadioStopped();
         if ((RadioState.state != RadioState.State.STOP) && ((RadioState.state != RadioState.State.INTERRUPTED) || (RadioState.state == RadioState.State.LOADING))) {
