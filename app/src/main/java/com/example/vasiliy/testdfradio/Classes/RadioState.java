@@ -28,6 +28,8 @@ public class RadioState {
         INTERRUPTED
     }
 
+    public static boolean isTransientCanDuck = false;
+
     public static Context context = null;
 
     public static State state = State.STOP;

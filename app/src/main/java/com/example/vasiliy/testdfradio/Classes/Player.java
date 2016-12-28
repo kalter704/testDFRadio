@@ -1,17 +1,24 @@
 package com.example.vasiliy.testdfradio.Classes;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.example.vasiliy.testdfradio.DataClasses.Const;
 import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
+import com.example.vasiliy.testdfradio.Services.NotificationService;
 import com.spoledge.aacdecoder.MultiPlayer;
 import com.spoledge.aacdecoder.PlayerCallback;
 
 import static android.content.Context.TELEPHONY_SERVICE;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK;
 
 
 public class Player implements PlayerCallback {
@@ -25,6 +32,8 @@ public class Player implements PlayerCallback {
 
     private MultiPlayer mRadioPlayer;
 
+    private AudioManager mAudioManager;
+
     private static Player instance = new Player();
 
     private Context context = null;
@@ -33,6 +42,8 @@ public class Player implements PlayerCallback {
     //private static boolean mIsStop = true;
 
     private static String mUrl = null;
+
+    private int mCurrentVolume;
 
     private Player() {}
 
@@ -47,7 +58,15 @@ public class Player implements PlayerCallback {
             if (instance.checkSuffix(URL)) {
                 instance.decodeStremLink(URL);
             } else {
-                instance.getPlayer().playAsync(URL);
+                instance.mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                int result = instance.mAudioManager.requestAudioFocus(instance.afChangeListener,
+                        AudioManager.STREAM_MUSIC,
+                        AudioManager.AUDIOFOCUS_GAIN);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    // начинаем воспроизведение
+                    instance.getPlayer().playAsync(URL);
+                }
             }
         }
     }
@@ -132,50 +151,102 @@ public class Player implements PlayerCallback {
             mRadioPlayer = new MultiPlayer(this, AUDIO_BUFFER_CAPACITY_MS, AUDIO_DECODE_CAPACITY_MS);
             mRadioPlayer.setResponseCodeCheckEnabled(false);
             mRadioPlayer.setPlayerCallback(this);
+
+            /*
             TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
             if (mTelephonyManager != null)
                 mTelephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+            */
         }
         return mRadioPlayer;
     }
 
-    PhoneStateListener phoneStateListener = new PhoneStateListener() {
-        @Override
-        public void onCallStateChanged(int state, String incomingNumber) {
-            if (state == TelephonyManager.CALL_STATE_RINGING) {
+    AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            //Log.d("PlayerTag", "focusChange = " + String.valueOf(focusChange));
+            if (focusChange == AUDIOFOCUS_LOSS_TRANSIENT) {
+                // Pause playback
+                RadioState.state = RadioState.State.INTERRUPTED;
+                Intent pauseIntent = new Intent(context, NotificationService.class);
+                pauseIntent.setAction(Const.ACTION.PLAY_ACTION);
+                PendingIntent ppauseIntent = PendingIntent.getService(context, 0, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                try {
+                    ppauseIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+                Log.d("PlayerTag", "AudioFocusChange AUDIOFOCUS_LOSS_TRANSIENT");
+            } else if ( focusChange == AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                mCurrentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                int newVolume = (int) (0.3 * mCurrentVolume);
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, AudioManager.FLAG_PLAY_SOUND);
+                RadioState.isTransientCanDuck = true;
+                Log.d("PlayerTag", "mCurrentVolume = " + String.valueOf(mCurrentVolume));
+                Log.d("PlayerTag", "newVolume = " + String.valueOf(newVolume));
+                Log.d("PlayerTag", "AudioFocusChange AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                // Resume playback
+                if (RadioState.state == RadioState.State.INTERRUPTED) {
+                    Intent pauseIntent = new Intent(context, NotificationService.class);
+                    pauseIntent.setAction(Const.ACTION.PLAY_ACTION);
+                    PendingIntent ppauseIntent = PendingIntent.getService(context, 0, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    try {
+                        ppauseIntent.send();
+                    } catch (PendingIntent.CanceledException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (RadioState.isTransientCanDuck) {
+                    RadioState.isTransientCanDuck = false;
+                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mCurrentVolume, AudioManager.FLAG_PLAY_SOUND);
+                }
+                Log.d("PlayerTag", "AudioFocusChange AUDIOFOCUS_GAIN");
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                //manager.unregisterMediaButtonEventReceiver(RemoteControlReceiver);
+                Intent pauseIntent = new Intent(context, NotificationService.class);
+                pauseIntent.setAction(Const.ACTION.PLAY_ACTION);
+                PendingIntent ppauseIntent = PendingIntent.getService(context, 0, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                try {
+                    ppauseIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+                mAudioManager.abandonAudioFocus(afChangeListener);
+                Log.d("PlayerTag", "AudioFocusChange AUDIOFOCUS_LOSS");
+            }
+        }
+    };
 
-                /**
-                 * Stop radio and set interrupted if it is playing on incoming call.
-                 */
+    /*
+    AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            if (focusChange == AUDIOFOCUS_LOSS_TRANSIENT) {
+                // Pause playback
                 if (RadioState.isPlaying()) {
                     RadioState.state = RadioState.State.INTERRUPTED;
                     stop();
                 }
-
-            } else if (state == TelephonyManager.CALL_STATE_IDLE) {
-
-                /**
-                 * Keep playing if it is interrupted.
-                 */
+                Log.d("PlayerTag", "AudioFocusChange AUDIOFOCUS_LOSS_TRANSIENT");
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                // Resume playback
                 if (RadioState.state == RadioState.State.INTERRUPTED) {
                     RadioChannels radioChannels = RadioChannels.getInstance();
                     start(context, radioChannels.mLinks[radioChannels.mIds.indexOf(radioChannels.mPlayRadioWithId)]);
                 }
-
-            } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
-
-                /**
-                 * Stop radio and set interrupted if it is playing on outgoing call.
-                 */
+                Log.d("PlayerTag", "AudioFocusChange AUDIOFOCUS_GAIN");
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                //manager.unregisterMediaButtonEventReceiver(RemoteControlReceiver);
+                mAudioManager.abandonAudioFocus(afChangeListener);
+                // Stop playback
                 if (RadioState.isPlaying()) {
-                    RadioState.state = RadioState.State.INTERRUPTED;
+                    RadioState.state = RadioState.State.STOP;
                     stop();
                 }
-
+                Log.d("PlayerTag", "AudioFocusChange AUDIOFOCUS_LOSS");
             }
-            super.onCallStateChanged(state, incomingNumber);
         }
     };
+    */
 
 }
 

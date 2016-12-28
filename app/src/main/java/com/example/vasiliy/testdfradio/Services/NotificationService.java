@@ -17,16 +17,6 @@ import com.example.vasiliy.testdfradio.DataClasses.RadioChannels;
 import com.example.vasiliy.testdfradio.R;
 
 public class NotificationService extends Service {
-    /*
-    public NotificationService() {
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-    */
 
     public static Context context;
     Notification notification;
